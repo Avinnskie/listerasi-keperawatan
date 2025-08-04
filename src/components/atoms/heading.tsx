@@ -1,3 +1,8 @@
-export const Heading = ({ children }: { children: React.ReactNode }) => (
-  <h1 className="text-xl font-bold text-center font-lexend">{children}</h1>
+type headingProps = {
+  children: React.ReactNode;
+  className?: string;
+};
+
+export const Heading = ({ className = '', children }: headingProps) => (
+  <h1 className={`${className} font-bold text-center font-lexend`}>{children}</h1>
 );
