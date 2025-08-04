@@ -1,12 +1,11 @@
 import { NavigationBar } from '@/components/molecules/navigationBar';
 import { LandingHero } from '@/components/organisms/landingPage';
-import Image from 'next/image';
 
 export default function Home() {
   return (
-    <>
-      <NavigationBar></NavigationBar>
+    <div className="relative min-h-screen overflow-y-hidden">
+      <NavigationBar className="fixed bg-[#fafcf7] z-50"></NavigationBar>
       <LandingHero />
-    </>
+    </div>
   );
 }
