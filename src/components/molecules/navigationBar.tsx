@@ -15,7 +15,7 @@ export const NavigationBar = ({ className }: NavbarProps) => {
   return (
     <>
       <nav
-        className={`${className} w-full z-50 px-4 md:px-12 py-4 flex justify-between items-center font-lexend`}
+        className={`${className} w-full z-50 px-2 md:px-4 py-4 flex justify-between items-center font-lexend`}
       >
         <div className="flex items-center space-x-6">
           <Link href={'/'}>
