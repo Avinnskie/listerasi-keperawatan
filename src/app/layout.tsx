@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Lexend } from 'next/font/google';
 import './globals.css';
+import { NavigationBar } from '@/components/molecules/navigationBar';
 
 const lexend = Lexend({
   variable: '--font-lexend',
@@ -20,7 +21,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${lexend.variable} antialiased`}>{children}</body>
+      <body className={`${lexend.variable} relative antialiased`}>
+        <NavigationBar className="fixed bg-[#fafcf7] z-50"></NavigationBar>
+        {children}
+      </body>
     </html>
   );
 }
