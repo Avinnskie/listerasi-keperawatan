@@ -180,7 +180,6 @@ export default function AdminMateriPage() {
       });
       if (!res.ok) throw new Error('Gagal menambah test');
 
-      // Refresh the test list after adding a new test
       await fetchTestsForMateri(testMateriId);
 
       toast.success(`${testType} Test berhasil ditambah! ✅`);

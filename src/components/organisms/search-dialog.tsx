@@ -56,7 +56,7 @@ export function SearchDialog({
     setTimeout(() => {
       setQuery('');
       setResults([]);
-        onOpenChange(false);
+      onOpenChange(false);
     }, 50);
   };
 
