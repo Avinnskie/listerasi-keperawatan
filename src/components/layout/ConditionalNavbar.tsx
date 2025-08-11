@@ -5,7 +5,7 @@ import { NavigationBar } from '@/components/molecules/navigationBar';
 
 export function ConditionalNavbar() {
   const pathname = usePathname();
-
+  
   if (pathname === '/login') {
     return null;
   }
