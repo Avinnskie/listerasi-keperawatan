@@ -38,17 +38,14 @@ export default function Login() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 font-lexend">
-      {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-100 rounded-full opacity-20 animate-pulse"></div>
         <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-green-100 rounded-full opacity-20 animate-pulse delay-2000"></div>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-purple-100 rounded-full opacity-10 animate-pulse delay-1000"></div>
       </div>
 
-      {/* Main content */}
       <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
         <div className="w-full max-w-md">
-          {/* Header/Logo section */}
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 text-white rounded-full mb-4 shadow-lg">
               <svg
@@ -70,10 +67,8 @@ export default function Login() {
             <p className="text-gray-600">Portal Admin Dashboard</p>
           </div>
 
-          {/* Login form container */}
           <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-xl border border-white/20 p-8">
             <div className="space-y-6">
-              {/* Header */}
               <div className="text-center">
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">Masuk Admin Panel</h2>
                 <p className="text-sm text-gray-600">
@@ -81,9 +76,7 @@ export default function Login() {
                 </p>
               </div>
 
-              {/* Form */}
               <form onSubmit={handleSubmit} className="space-y-4">
-                {/* Email Field */}
                 <div className="space-y-2">
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                     Email Address
@@ -105,7 +98,6 @@ export default function Login() {
                   </div>
                 </div>
 
-                {/* Password Field */}
                 <div className="space-y-2">
                   <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                     Password
@@ -139,7 +131,6 @@ export default function Login() {
                   </div>
                 </div>
 
-                {/* Submit Button */}
                 <button
                   type="submit"
                   disabled={isLoading}
@@ -177,40 +168,9 @@ export default function Login() {
                   )}
                 </button>
               </form>
-
-              {/* Demo credentials note */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <div className="flex items-start">
-                  <div className="flex-shrink-0">
-                    <svg className="h-5 w-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
-                      <path
-                        fillRule="evenodd"
-                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </div>
-                  <div className="ml-3">
-                    <h3 className="text-sm font-medium text-blue-800">Demo Credentials</h3>
-                    <div className="mt-2 text-sm text-blue-700">
-                      <p>
-                        Email:{' '}
-                        <span className="font-mono bg-blue-100 px-1 rounded">
-                          admin@example.com
-                        </span>
-                      </p>
-                      <p>
-                        Password:{' '}
-                        <span className="font-mono bg-blue-100 px-1 rounded">admin123</span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
 
-          {/* Footer */}
           <div className="text-center mt-6">
             <p className="text-sm text-gray-500">
               © 2024 Literasi Keperawatan. All rights reserved.

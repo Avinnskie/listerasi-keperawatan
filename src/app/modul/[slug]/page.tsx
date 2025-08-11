@@ -1,4 +1,3 @@
-// app/modul/[slug]/page.tsx
 import prisma from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import { MateriClientPage } from './client';
@@ -18,10 +17,8 @@ export default async function MateriPage({ params }: { params: Promise<{ slug: s
 
   if (!materi) return notFound();
 
-  // Ambil postTest dari array tests
   const postTest = materi.tests.length > 0 ? materi.tests[0] : null;
 
-  // Ambil semua materi untuk sidebar
   const materiList = await prisma.materi.findMany({
     orderBy: { title: 'asc' },
   });

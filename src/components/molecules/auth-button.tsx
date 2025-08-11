@@ -41,7 +41,6 @@ export const AuthButton: React.FC<AuthButtonProps> = ({ variant = 'desktop', onM
   }
 
   if (session) {
-    // User is logged in
     const userName = session.user?.name || session.user?.email?.split('@')[0] || 'User';
     const displayName = userName.length > 15 ? `${userName.substring(0, 15)}...` : userName;
 
@@ -69,7 +68,6 @@ export const AuthButton: React.FC<AuthButtonProps> = ({ variant = 'desktop', onM
         </div>
       );
     } else {
-      // Mobile variant
       return (
         <>
           <div className="text-sm text-gray-600 px-2">Halo, {displayName}</div>
@@ -96,7 +94,6 @@ export const AuthButton: React.FC<AuthButtonProps> = ({ variant = 'desktop', onM
     }
   }
 
-  // User is not logged in
   if (variant === 'desktop') {
     return (
       <Link

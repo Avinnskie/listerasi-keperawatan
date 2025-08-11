@@ -29,7 +29,6 @@ export function SearchDialog({
   const [results, setResults] = useState<MateriData[]>([]);
   const [loading, setLoading] = useState(false);
 
-  // Fetch data dengan debounce
   useEffect(() => {
     if (!query || query.length < 2) {
       setResults([]);
@@ -52,13 +51,12 @@ export function SearchDialog({
     return () => clearTimeout(timeout);
   }, [query]);
 
-  // Handler pilih item
   const handleSelect = (slug: string) => {
     router.push(`/modul/${slug}`);
     setTimeout(() => {
       setQuery('');
       setResults([]);
-      onOpenChange(false); // Tutup dialog hanya di sini
+        onOpenChange(false);
     }, 50);
   };
 
@@ -66,7 +64,6 @@ export function SearchDialog({
     <CommandDialog
       open={open}
       onOpenChange={(isOpen) => {
-        // Hanya izinkan tutup kalau user klik luar atau tekan ESC
         if (!isOpen) {
           setQuery('');
           setResults([]);

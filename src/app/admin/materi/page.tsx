@@ -8,7 +8,6 @@ import { AdminForm } from '@/components/organisms';
 import { Label } from '@/components/atoms';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-// Import MD Editor dynamically to avoid SSR issues
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false });
 
 type Materi = {
@@ -38,36 +37,30 @@ export default function AdminMateriPage() {
   const [testList, setTestList] = useState<Test[]>([]);
   const [activeTab, setActiveTab] = useState('konten');
 
-  // Materi State
   const [title, setTitle] = useState('');
   const [slug, setSlug] = useState('');
   const [category, setCategory] = useState('');
   const [type, setType] = useState<'PENGANTAR' | 'SUB_MATERI'>('PENGANTAR');
 
-  // Step State
   const [stepMateriId, setStepMateriId] = useState('');
   const [stepTitle, setStepTitle] = useState('');
   const [stepContent, setStepContent] = useState('');
   const [stepOrder, setStepOrder] = useState(1);
 
-  // Test State
   const [testMateriId, setTestMateriId] = useState('');
   const [testType, setTestType] = useState<'PRE' | 'POST'>('PRE');
   const [availableTestTypes, setAvailableTestTypes] = useState<('PRE' | 'POST')[]>(['PRE', 'POST']);
 
-  // Question State
   const [questionMateriId, setQuestionMateriId] = useState('');
   const [questionTestId, setQuestionTestId] = useState('');
   const [questionText, setQuestionText] = useState('');
   const [options, setOptions] = useState(['', '', '', '']);
   const [answerIndex, setAnswerIndex] = useState(0);
 
-  // Fetch all materi on load
   useEffect(() => {
     fetchMateriList();
   }, []);
 
-  // Fetch tests when materi is selected for questions
   useEffect(() => {
     if (!questionMateriId) {
       setTestList([]);
@@ -76,14 +69,12 @@ export default function AdminMateriPage() {
     fetchTestsForMateri(questionMateriId);
   }, [questionMateriId]);
 
-  // Update available test types when a materi is selected for tests
   useEffect(() => {
     if (!testMateriId) {
       setAvailableTestTypes(['PRE', 'POST']);
       return;
     }
 
-    // Fetch current tests for this materi to determine which test types are already added
     fetchTestsForMateri(testMateriId).then((tests) => {
       const existingTypes = tests.map((t) => t.type);
       const availableTypes = (['PRE', 'POST'] as ('PRE' | 'POST')[]).filter(
@@ -92,7 +83,6 @@ export default function AdminMateriPage() {
 
       setAvailableTestTypes(availableTypes.length ? availableTypes : ['PRE', 'POST']);
 
-      // Default to first available type if current is not available
       if (availableTypes.length && !availableTypes.includes(testType)) {
         setTestType(availableTypes[0]);
       }
@@ -195,10 +185,7 @@ export default function AdminMateriPage() {
 
       toast.success(`${testType} Test berhasil ditambah! ✅`);
 
-      // Don't reset testMateriId to allow adding another test type easily
-      // setTestMateriId('');
 
-      // Switch to POST if we just added PRE, or keep as PRE
       if (testType === 'PRE' && availableTestTypes.includes('POST')) {
         setTestType('POST');
       } else {
@@ -227,14 +214,10 @@ export default function AdminMateriPage() {
       if (!res.ok) throw new Error('Gagal menambah question');
       toast.success('Question berhasil ditambah! ❓');
 
-      // Keep the materi and test selected, just clear the question details
-      // setQuestionMateriId('');
-      // setQuestionTestId('');
       setQuestionText('');
       setOptions(['', '', '', '']);
       setAnswerIndex(0);
 
-      // Refresh test list to show updated question count
       if (questionMateriId) {
         fetchTestsForMateri(questionMateriId);
       }
@@ -267,7 +250,6 @@ export default function AdminMateriPage() {
           <TabsTrigger value="ujian">Kelola Ujian</TabsTrigger>
         </TabsList>
 
-        {/* Kelola Konten Tab */}
         <TabsContent value="konten" className="space-y-6">
           <AdminForm
             title="Tambah Materi"
@@ -355,9 +337,7 @@ export default function AdminMateriPage() {
           </AdminForm>
         </TabsContent>
 
-        {/* Kelola Ujian Tab */}
         <TabsContent value="ujian" className="space-y-6">
-          {/* Form Test */}
           <section className="border p-6 rounded-lg shadow bg-white">
             <h2 className="text-xl font-semibold mb-4">Tambah Test</h2>
             <form onSubmit={submitTest} className="space-y-4">
@@ -420,7 +400,6 @@ export default function AdminMateriPage() {
             </form>
           </section>
 
-          {/* Form Question */}
           <section className="border p-6 rounded-lg shadow bg-white">
             <h2 className="text-xl font-semibold mb-4">Tambah Question</h2>
             <form onSubmit={submitQuestion} className="space-y-4">
@@ -430,7 +409,7 @@ export default function AdminMateriPage() {
                   value={questionMateriId}
                   onChange={(e) => {
                     setQuestionMateriId(e.target.value);
-                    setQuestionTestId(''); // Reset test selection when materi changes
+                    setQuestionTestId('');
                   }}
                   required
                   className="border p-2 w-full rounded"
@@ -480,7 +459,6 @@ export default function AdminMateriPage() {
                 />
               </div>
 
-              {/* Options */}
               <div className="space-y-3">
                 <Label required>Opsi Jawaban</Label>
                 {options.map((opt, i) => (

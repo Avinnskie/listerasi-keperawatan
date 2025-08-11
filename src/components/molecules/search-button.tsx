@@ -15,7 +15,6 @@ export const SearchButton: React.FC<SearchButtonProps> = ({
 }) => {
   const [open, setOpen] = useState(false);
 
-  // Keyboard shortcut (Ctrl/Cmd + K)
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
       if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
@@ -30,7 +29,6 @@ export const SearchButton: React.FC<SearchButtonProps> = ({
 
   const handleOpen = () => {
     setOpen(true);
-    // Close mobile menu if search is opened from mobile
     if (variant === 'mobile') {
       onMobileClose?.();
     }
@@ -54,7 +52,6 @@ export const SearchButton: React.FC<SearchButtonProps> = ({
     );
   }
 
-  // Mobile variant
   return (
     <>
       <button

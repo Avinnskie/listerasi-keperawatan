@@ -10,14 +10,13 @@ export default function Dashboard() {
   const router = useRouter();
 
   useEffect(() => {
-    if (status === 'loading') return; // Still loading
+    if (status === 'loading') return;
 
     if (!session) {
       router.push('/login');
       return;
     }
 
-    // Check if user is admin
     if (session.user?.role !== 'ADMIN') {
       router.push('/unauthorized');
       return;
@@ -29,7 +28,7 @@ export default function Dashboard() {
   }
 
   if (!session) {
-    return null; // Will redirect to login
+    return null;
   }
 
   return (

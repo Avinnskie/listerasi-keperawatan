@@ -1,4 +1,3 @@
-// app/modul/[slug]/test/page.tsx
 import prisma from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import TestClientPage from './testClient';
@@ -16,7 +15,6 @@ export default async function TestPage({
   const resolvedSearchParams = await searchParams;
   const type = resolvedSearchParams.type === 'PRE' ? 'PRE' : 'POST';
 
-  // Cari materi
   const materi = await prisma.materi.findUnique({
     where: { slug },
     select: { id: true, title: true },
@@ -24,7 +22,6 @@ export default async function TestPage({
 
   if (!materi) return notFound();
 
-  // Cari test sesuai type
   const test = await prisma.test.findFirst({
     where: {
       materiId: materi.id,
@@ -33,12 +30,10 @@ export default async function TestPage({
     include: { questions: true },
   });
 
-  // Check if test doesn't exist
   if (!test) {
     return <TestNotAvailable testType={type} materiTitle={materi.title} materiSlug={slug} />;
   }
 
-  // Check if test exists but has no questions
   if (!test.questions || test.questions.length === 0) {
     return <TestEmptyQuestions testType={type} materiTitle={materi.title} materiSlug={slug} />;
   }

@@ -13,7 +13,6 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ materials: [] });
     }
 
-    // Search in materials with title, category, and steps content
     const materials = await prisma.materi.findMany({
       where: {
         OR: [
@@ -70,7 +69,7 @@ export async function GET(request: NextRequest) {
           title: 'asc',
         },
       ],
-      take: 10, // Limit results
+      take: 10,
     });
 
     console.log('Raw materials from DB:', materials.length);
@@ -78,14 +77,13 @@ export async function GET(request: NextRequest) {
       console.log('First material:', materials[0]);
     }
 
-    // Transform data to match SearchDialog expectations
     const transformedMaterials = materials.map((material) => ({
       id: material.id,
       title: material.title,
       slug: material.slug,
       category: material.category,
       type: material.type,
-      createdAt: new Date().toISOString(), // Use current date as fallback since createdAt doesn't exist
+      createdAt: new Date().toISOString(),
       steps: material.steps,
       _count: material._count,
     }));

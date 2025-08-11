@@ -57,7 +57,6 @@ export const MateriClientPage = ({
 
   return (
     <section className="relative min-h-screen font-lexend pt-[72px]">
-      {/* Mobile Topbar */}
       <div className="lg:hidden px-4 py-2 border-b flex justify-between items-center">
         <button onClick={() => setSidebarOpen(true)} className="flex items-center gap-2">
           <PanelRightOpen />
@@ -66,14 +65,12 @@ export const MateriClientPage = ({
       </div>
 
       <div className="flex lg:flex-row">
-        {/* Sidebar */}
         <SidebarModul
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
           materiList={materiList}
         />
 
-        {/* Konten Utama */}
         <div className="flex-1 px-6 py-10">
           <h1 className="text-2xl font-bold text-primary mb-2">{materi.title}</h1>
 

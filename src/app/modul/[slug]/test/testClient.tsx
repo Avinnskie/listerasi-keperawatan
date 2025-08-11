@@ -1,4 +1,3 @@
-// app/modul/[slug]/test/testClient.tsx
 'use client';
 
 import { useState } from 'react';
@@ -38,7 +37,6 @@ export default function TestClientPage({
   };
 
   const handleNext = () => {
-    // Pastikan user sudah memilih jawaban untuk soal ini
     if (answers[currentIndex] === undefined) {
       toast.warning('Silakan pilih jawaban terlebih dahulu!');
       return;
@@ -47,9 +45,7 @@ export default function TestClientPage({
     if (currentIndex < questions.length - 1) {
       setCurrentIndex((prev) => prev + 1);
     } else {
-      // Hitung score berdasarkan jawaban yang benar
       const correct = questions.filter((q, i) => {
-        // Pastikan jawaban sudah dipilih dan cocok dengan jawaban yang benar
         return answers[i] !== undefined && answers[i] === q.answer;
       }).length;
       const finalScore = Math.floor((correct / questions.length) * 100);

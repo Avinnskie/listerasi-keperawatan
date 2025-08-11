@@ -59,7 +59,6 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({ open, onOpenChange }
     }
   }, []);
 
-  // Debounce search
   useEffect(() => {
     const timer = setTimeout(() => {
       searchMaterials(query);
@@ -68,7 +67,6 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({ open, onOpenChange }
     return () => clearTimeout(timer);
   }, [query, searchMaterials]);
 
-  // Reset when dialog closes
   useEffect(() => {
     if (!open) {
       setQuery('');
