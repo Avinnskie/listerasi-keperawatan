@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Heading } from '../atoms/heading';
-import { Search } from 'lucide-react';
+import { AuthButton } from './auth-button';
+import { SearchButton } from './search-button';
 
 type NavbarProps = {
   className?: string;
@@ -21,33 +22,11 @@ export const NavigationBar = ({ className }: NavbarProps) => {
           <Link href={'/'}>
             <Heading>Literasi Keperawatan</Heading>
           </Link>
-
-          <div className="hidden md:flex items-center space-x-6">
-            <Link className="hover:text-[#38E078]" href="#">
-              Kardiovaskular
-            </Link>
-            <Link className="hover:text-[#38E078]" href="#">
-              COVID-19
-            </Link>
-            <Link className="hover:text-[#38E078]" href="#">
-              Keperawatan
-            </Link>
-          </div>
         </div>
 
-        <div className="hidden md:flex space-x-5">
-          <Link
-            href="/login"
-            className="flex gap-2 px-5 py-2 bg-[#E8F2ED] rounded-md text-[#38E078] font-semibold"
-          >
-            <Search /> Search
-          </Link>
-          <Link
-            href="/login"
-            className="px-5 py-2 bg-[#38E078] rounded-md text-white font-semibold"
-          >
-            Masuk
-          </Link>
+        <div className="hidden md:flex items-center space-x-3">
+          <SearchButton variant="desktop" />
+          <AuthButton variant="desktop" />
         </div>
 
         <button onClick={() => setIsOpen(true)} className="md:hidden focus:outline-none">
@@ -86,18 +65,8 @@ export const NavigationBar = ({ className }: NavbarProps) => {
           </button>
         </div>
         <div className="flex flex-col px-6 space-y-6 mt-8 text-lg font-medium">
-          <Link className="hover:text-[#38E078]" href="#">
-            Kardiovaskular
-          </Link>
-          <Link className="hover:text-[#38E078]" href="#">
-            COVID-19
-          </Link>
-          <Link className="hover:text-[#38E078]" href="#">
-            Keperawatan
-          </Link>
-          <Link href="/login" className="text-[#38E078] font-semibold">
-            Masuk
-          </Link>
+          <SearchButton variant="mobile" onMobileClose={() => setIsOpen(false)} />
+          <AuthButton variant="mobile" onMobileClose={() => setIsOpen(false)} />
         </div>
       </div>
     </>

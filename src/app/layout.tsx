@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import { Lexend } from 'next/font/google';
 import './globals.css';
-import { NavigationBar } from '@/components/molecules/navigationBar';
+import { ConditionalNavbar } from '@/components/layout/ConditionalNavbar';
+import { Toaster } from '@/components/ui/sonner';
+import { Providers } from '@/components/providers/session-provider';
 
 const lexend = Lexend({
   variable: '--font-lexend',
@@ -22,8 +24,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${lexend.variable} relative antialiased`}>
-        <NavigationBar className="fixed bg-[#fafcf7] z-50"></NavigationBar>
-        {children}
+        <Providers>
+          <ConditionalNavbar />
+          {children}
+          <Toaster />
+        </Providers>
       </body>
     </html>
   );

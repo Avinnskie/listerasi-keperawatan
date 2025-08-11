@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String   @id @default(cuid())
+  name     String?
+  email    String   @unique
+  password String
+  role     Role     @default(USER)
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+model Materi {
+  id       String     @id @default(cuid())
+  title    String
+  slug     String     @unique
+  category String
+  type     MateriType
+  steps    Step[]
+  tests    Test[]
+}
+
+model Step {
+  id            String         @id @default(cuid())
+  title         String
+  content       String
+  order         Int
+  materiId      String
+  materi        Materi         @relation(fields: [materiId], references: [id])
+  testQuestions StepQuestion[]
+}
+
+model Test {
+  id       String   @id @default(cuid())
+  type     TestType
+  materiId String
+  materi   Materi   @relation(fields: [materiId], references: [id])
+  questions Question[]
+}
+
+model Question {
+  id       String   @id @default(cuid())
+  question String
+  options  String[]
+  answer   Int
+  testId   String
+  test     Test     @relation(fields: [testId], references: [id])
+}
+
+model StepQuestion {
+  id       String   @id @default(cuid())
+  question String
+  options  String[]
+  answer   Int
+  stepId   String
+  step     Step     @relation(fields: [stepId], references: [id])
+}
+
+enum TestType {
+  PRE
+  POST
+}
+
+enum MateriType {
+  PENGANTAR
+  SUB_MATERI
+}

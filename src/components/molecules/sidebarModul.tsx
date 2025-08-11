@@ -1,18 +1,15 @@
-'use client';
-
-import { materiList } from '@/lib/data/materiList';
-import Link from 'next/link';
-
 type SidebarModulProps = {
   sidebarOpen: boolean;
   setSidebarOpen: (open: boolean) => void;
+  materiList?: { id: string; title: string; slug: string; category: string; type?: string }[];
+  loading?: boolean;
 };
 
-export const SidebarModul = ({ sidebarOpen, setSidebarOpen }: SidebarModulProps) => {
+export const SidebarModul = ({ sidebarOpen, setSidebarOpen, materiList }: SidebarModulProps) => {
   return (
     <>
       <aside className="hidden lg:block w-64 border-r bg-[#fafcf7] px-4 py-6 h-full overflow-y-auto">
-        <SidebarContent />
+        <SidebarContent materiList={materiList} />
       </aside>
 
       <aside
@@ -27,7 +24,7 @@ export const SidebarModul = ({ sidebarOpen, setSidebarOpen }: SidebarModulProps)
             ✕ Tutup
           </button>
         </div>
-        <SidebarContent />
+        <SidebarContent materiList={materiList} />
       </aside>
 
       {sidebarOpen && (
@@ -40,27 +37,59 @@ export const SidebarModul = ({ sidebarOpen, setSidebarOpen }: SidebarModulProps)
   );
 };
 
-const SidebarContent = () => (
-  <nav className="space-y-4">
-    {materiList.map((category) => (
-      <div key={category.category}>
-        <h3 className="text-sm font-semibold text-gray-700 uppercase mb-2">
-          {category.category}
-        </h3>
-        <ul className="space-y-1 text-sm w-full">
-          {category.items.map((item) => (
-            <li key={item.slug}>
-              <Link
-                href={`/modul/${item.slug}`}
-                className="block px-2 py-1 rounded hover:bg-[#38e078]/20 hover:text-gray-600 transition text-gray-400"
-              >
-                {item.title}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
-    ))}
-  </nav>
-);
+const SidebarContent = ({ materiList }: { materiList: SidebarModulProps['materiList'] }) => {
+  if (!materiList || !Array.isArray(materiList) || materiList.length === 0) {
+    return (
+      <nav className="space-y-4">
+        <div className="text-sm text-gray-500 text-center py-4">
+          Tidak ada materi tersedia
+        </div>
+      </nav>
+    );
+  }
 
+  const grouped = materiList.reduce((acc: Record<string, typeof materiList>, materi) => {
+    if (!acc[materi.category]) acc[materi.category] = [];
+    acc[materi.category].push(materi);
+    return acc;
+  }, {});
+
+  const kesehatanOrder = [
+    'pendahuluan-covid-19',
+    'covid-19',
+    'sars-cov-2',
+    'imunisasi-covid-19',
+  ];
+
+  Object.keys(grouped).forEach((category) => {
+    if (category.toLowerCase() === 'kesehatan') {
+      grouped[category].sort(
+        (a, b) => kesehatanOrder.indexOf(a.slug) - kesehatanOrder.indexOf(b.slug)
+      );
+    } else {
+      grouped[category].sort((a, b) => a.title.localeCompare(b.title));
+    }
+  });
+
+  return (
+    <nav className="space-y-4">
+      {Object.keys(grouped).map((category) => (
+        <div key={category}>
+          <h3 className="text-sm font-semibold text-gray-700 uppercase mb-2">{category}</h3>
+          <ul className="space-y-1 text-sm w-full">
+            {grouped[category].map((item) => (
+              <li key={item.slug}>
+                <a
+                  href={`/modul/${item.slug}`}
+                  className="block px-2 py-1 rounded hover:bg-[#38e078]/20 hover:text-gray-600 transition text-gray-400"
+                >
+                  {item.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </nav>
+  );
+};
