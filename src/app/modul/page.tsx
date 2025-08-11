@@ -47,16 +47,16 @@ export default function Modul() {
         </button>
       </div>
 
-      <SidebarModul 
-        sidebarOpen={sidebarOpen} 
-        setSidebarOpen={setSidebarOpen} 
+      <SidebarModul
+        sidebarOpen={sidebarOpen}
+        setSidebarOpen={setSidebarOpen}
         materiList={materiList}
       />
 
       <main className="w-full lg:w-full px-6 md:px-10 py-10 flex flex-col items-center justify-center text-center z-10 relative">
         <img src="/asset/guide.svg" alt="Panduan Awal" className="w-40 md:w-56 h-auto mb-6" />
         <Heading>Selamat datang di Halaman Modul</Heading>
-        
+
         {loading ? (
           <div className="mt-4 text-gray-600">
             <p>Memuat materi pembelajaran...</p>
@@ -70,9 +70,7 @@ export default function Modul() {
               Kami menyediakan materi yang mudah dipahami dan disusun khusus untuk Anda.
             </p>
             {materiList.length > 0 && (
-              <p className="mt-2 text-green-600 text-sm">
-                {materiList.length} materi tersedia
-              </p>
+              <p className="mt-2 text-green-600 text-sm">{materiList.length} materi tersedia</p>
             )}
           </>
         )}

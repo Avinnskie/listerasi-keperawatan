@@ -24,28 +24,24 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   className = '',
 }) => {
   return (
-    <div className={`flex flex-col items-center justify-center text-center py-12 px-6 ${className}`}>
-      <div className="text-6xl mb-4 opacity-50">
-        {icon}
-      </div>
-      
-      <Heading className="text-2xl font-bold text-gray-900 mb-3">
-        {title}
-      </Heading>
-      
+    <div
+      className={`flex flex-col items-center justify-center text-center py-12 px-6 ${className}`}
+    >
+      <div className="text-6xl mb-4 opacity-50">{icon}</div>
+
+      <Heading className="text-2xl font-bold text-gray-900 mb-3">{title}</Heading>
+
       {description && (
         <Text variant="body" color="secondary" className="max-w-md mb-6">
           {description}
         </Text>
       )}
-      
-      {(actionLabel && (actionHref || onAction)) && (
+
+      {actionLabel && (actionHref || onAction) && (
         <div className="mt-4">
           {actionHref ? (
             <Link href={actionHref}>
-              <Button variant="default">
-                {actionLabel}
-              </Button>
+              <Button variant="default">{actionLabel}</Button>
             </Link>
           ) : (
             <Button onClick={onAction} variant="default">

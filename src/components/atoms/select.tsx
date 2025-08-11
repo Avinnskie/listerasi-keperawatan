@@ -19,14 +19,15 @@ export const Select: React.FC<SelectProps> = ({
   options,
   value,
   onChange,
-  placeholder = "-- Pilih --",
+  placeholder = '-- Pilih --',
   required = false,
   disabled = false,
   className = '',
 }) => {
-  const baseStyles = 'border p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent';
+  const baseStyles =
+    'border p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent';
   const disabledStyles = disabled ? 'bg-gray-100 cursor-not-allowed' : '';
-  
+
   return (
     <select
       value={value}

@@ -6,22 +6,16 @@ export async function POST(request: NextRequest) {
     const { title, content, order, materiId } = await request.json();
 
     if (!title || !content || !order || !materiId) {
-      return NextResponse.json(
-        { error: 'Missing fields' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
     }
 
     const step = await prisma.step.create({
       data: { title, content, order: Number(order), materiId },
     });
-    
+
     return NextResponse.json(step, { status: 201 });
   } catch (error) {
     console.error(error);
-    return NextResponse.json(
-      { error: 'Failed to create step' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to create step' }, { status: 500 });
   }
 }

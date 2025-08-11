@@ -23,9 +23,10 @@ export const Input: React.FC<InputProps> = ({
   min,
   max,
 }) => {
-  const baseStyles = 'border p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent';
+  const baseStyles =
+    'border p-2 w-full rounded focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent';
   const disabledStyles = disabled ? 'bg-gray-100 cursor-not-allowed' : '';
-  
+
   return (
     <input
       type={type}

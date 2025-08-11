@@ -14,12 +14,9 @@ export const Label: React.FC<LabelProps> = ({
   required = false,
 }) => {
   const baseStyles = 'block text-sm font-medium text-gray-700 mb-2';
-  
+
   return (
-    <label 
-      htmlFor={htmlFor} 
-      className={`${baseStyles} ${className}`}
-    >
+    <label htmlFor={htmlFor} className={`${baseStyles} ${className}`}>
       {children}
       {required && <span className="text-red-500 ml-1">*</span>}
     </label>

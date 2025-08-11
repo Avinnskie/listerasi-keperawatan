@@ -17,7 +17,13 @@ type MateriData = {
   slug: string;
 };
 
-export function SearchDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
+export function SearchDialog({
+  open,
+  onOpenChange,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
   const router = useRouter();
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<MateriData[]>([]);

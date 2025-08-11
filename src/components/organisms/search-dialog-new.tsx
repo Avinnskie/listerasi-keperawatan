@@ -4,12 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { 
-  BookOpenIcon, 
-  ClockIcon, 
-  FolderIcon,
-  SearchIcon 
-} from 'lucide-react';
+import { BookOpenIcon, ClockIcon, FolderIcon, SearchIcon } from 'lucide-react';
 import { toast } from 'sonner';
 
 type Material = {
@@ -33,10 +28,7 @@ type SearchDialogProps = {
   onOpenChange: (open: boolean) => void;
 };
 
-export const SearchDialog: React.FC<SearchDialogProps> = ({ 
-  open, 
-  onOpenChange 
-}) => {
+export const SearchDialog: React.FC<SearchDialogProps> = ({ open, onOpenChange }) => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<Material[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -51,7 +43,7 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({
     setIsLoading(true);
     try {
       const response = await fetch(`/api/search?q=${encodeURIComponent(searchQuery)}`);
-      
+
       if (response.ok) {
         const data = await response.json();
         setResults(data.materials || []);
@@ -114,7 +106,7 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({
             Cari Materi Pembelajaran
           </DialogTitle>
         </DialogHeader>
-        
+
         <div className="p-6">
           <Input
             placeholder="Ketik untuk mencari materi..."
@@ -123,8 +115,7 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({
             className="mb-4"
             autoFocus
           />
-          
-          
+
           <div className="max-h-[400px] overflow-y-auto">
             {isLoading ? (
               <div className="flex items-center justify-center py-8">
@@ -138,7 +129,7 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({
                 </h3>
                 {results.map((material) => {
                   const TypeIcon = getTypeIcon(material.type);
-                  
+
                   return (
                     <button
                       key={material.id}
@@ -149,7 +140,7 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({
                         <div className="flex-shrink-0 mt-1">
                           <TypeIcon className="h-4 w-4 text-green-600" />
                         </div>
-                        
+
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center space-x-2 mb-1">
                             <h4 className="text-sm font-semibold text-gray-900 truncate">
@@ -159,7 +150,7 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({
                               {getTypeLabel(material.type)}
                             </span>
                           </div>
-                          
+
                           <div className="flex items-center space-x-4 text-xs text-gray-500">
                             <span className="flex items-center">
                               <FolderIcon className="h-3 w-3 mr-1" />
@@ -174,11 +165,15 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({
                               {formatDate(material.createdAt)}
                             </span>
                           </div>
-                          
+
                           {material.steps.length > 0 && (
                             <div className="mt-1">
                               <p className="text-xs text-gray-400 truncate">
-                                Langkah: {material.steps.slice(0, 2).map(step => step.title).join(', ')}
+                                Langkah:{' '}
+                                {material.steps
+                                  .slice(0, 2)
+                                  .map((step) => step.title)
+                                  .join(', ')}
                                 {material.steps.length > 2 && '...'}
                               </p>
                             </div>
@@ -193,9 +188,7 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({
               <div className="py-8 text-center">
                 <SearchIcon className="mx-auto h-12 w-12 text-gray-400 mb-4" />
                 <p className="text-gray-600 font-medium">Tidak ada materi yang ditemukan</p>
-                <p className="text-sm text-gray-500 mt-1">
-                  Coba gunakan kata kunci yang berbeda
-                </p>
+                <p className="text-sm text-gray-500 mt-1">Coba gunakan kata kunci yang berbeda</p>
               </div>
             ) : (
               <div className="py-8 text-center">

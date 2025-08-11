@@ -79,7 +79,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Transform data to match SearchDialog expectations
-    const transformedMaterials = materials.map(material => ({
+    const transformedMaterials = materials.map((material) => ({
       id: material.id,
       title: material.title,
       slug: material.slug,
@@ -94,9 +94,6 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ materials: transformedMaterials });
   } catch (error) {
     console.error('Search error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

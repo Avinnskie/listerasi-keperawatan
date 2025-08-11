@@ -9,9 +9,9 @@ type SearchButtonProps = {
   onMobileClose?: () => void;
 };
 
-export const SearchButton: React.FC<SearchButtonProps> = ({ 
+export const SearchButton: React.FC<SearchButtonProps> = ({
   variant = 'desktop',
-  onMobileClose 
+  onMobileClose,
 }) => {
   const [open, setOpen] = useState(false);
 

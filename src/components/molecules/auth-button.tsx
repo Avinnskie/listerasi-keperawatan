@@ -10,19 +10,16 @@ type AuthButtonProps = {
   onMobileClose?: () => void;
 };
 
-export const AuthButton: React.FC<AuthButtonProps> = ({ 
-  variant = 'desktop', 
-  onMobileClose 
-}) => {
+export const AuthButton: React.FC<AuthButtonProps> = ({ variant = 'desktop', onMobileClose }) => {
   const { data: session, status } = useSession();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const handleLogout = async () => {
     setIsLoggingOut(true);
     try {
-      await signOut({ 
+      await signOut({
         callbackUrl: '/',
-        redirect: true 
+        redirect: true,
       });
       toast.success('Berhasil logout! Sampai jumpa lagi 👋');
       onMobileClose?.();
@@ -47,14 +44,12 @@ export const AuthButton: React.FC<AuthButtonProps> = ({
     // User is logged in
     const userName = session.user?.name || session.user?.email?.split('@')[0] || 'User';
     const displayName = userName.length > 15 ? `${userName.substring(0, 15)}...` : userName;
-    
+
     if (variant === 'desktop') {
       return (
         <div className="flex items-center space-x-4">
-          <span className="text-sm text-gray-600">
-            Halo, {displayName}
-          </span>
-          
+          <span className="text-sm text-gray-600">Halo, {displayName}</span>
+
           {session.user?.role === 'ADMIN' && (
             <Link
               href="/admin"
@@ -63,7 +58,7 @@ export const AuthButton: React.FC<AuthButtonProps> = ({
               Admin
             </Link>
           )}
-          
+
           <button
             onClick={handleLogout}
             disabled={isLoggingOut}
@@ -77,20 +72,18 @@ export const AuthButton: React.FC<AuthButtonProps> = ({
       // Mobile variant
       return (
         <>
-          <div className="text-sm text-gray-600 px-2">
-            Halo, {displayName}
-          </div>
-          
+          <div className="text-sm text-gray-600 px-2">Halo, {displayName}</div>
+
           {session.user?.role === 'ADMIN' && (
-            <Link 
-              href="/admin" 
+            <Link
+              href="/admin"
               className="text-blue-600 font-semibold hover:text-blue-800"
               onClick={onMobileClose}
             >
               Admin Dashboard
             </Link>
           )}
-          
+
           <button
             onClick={handleLogout}
             disabled={isLoggingOut}
@@ -115,8 +108,8 @@ export const AuthButton: React.FC<AuthButtonProps> = ({
     );
   } else {
     return (
-      <Link 
-        href="/login" 
+      <Link
+        href="/login"
         className="text-[#38E078] font-semibold hover:text-green-600"
         onClick={onMobileClose}
       >

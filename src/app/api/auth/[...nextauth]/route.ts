@@ -1,23 +1,23 @@
-import NextAuth from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcryptjs";
+import NextAuth from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
 const handler = NextAuth({
   providers: [
     CredentialsProvider({
-      name: "Credentials",
+      name: 'Credentials',
       credentials: {
-        email: { label: "Email", type: "email", placeholder: "admin@example.com" },
-        password: { label: "Password", type: "password" }
+        email: { label: 'Email', type: 'email', placeholder: 'admin@example.com' },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
         if (!credentials) return null;
 
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email }
+          where: { email: credentials.email },
         });
 
         if (!user) return null;
@@ -25,7 +25,7 @@ const handler = NextAuth({
         const isValid = await bcrypt.compare(credentials.password, user.password);
         if (!isValid) return null;
 
-        if (user.role !== "ADMIN") return null;
+        if (user.role !== 'ADMIN') return null;
 
         return {
           id: user.id,
@@ -33,10 +33,10 @@ const handler = NextAuth({
           name: user.name,
           role: user.role,
         };
-      }
-    })
+      },
+    }),
   ],
-  session: { strategy: "jwt" },
+  session: { strategy: 'jwt' },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
@@ -48,13 +48,13 @@ const handler = NextAuth({
     async session({ session, token }) {
       if (token) {
         session.user.id = token.id as string;
-        session.user.role = token.role as "ADMIN" | "USER";
+        session.user.role = token.role as 'ADMIN' | 'USER';
       }
       return session;
-    }
+    },
   },
   pages: {
-    signIn: "/login"
+    signIn: '/login',
   },
   secret: process.env.NEXTAUTH_SECRET,
 });

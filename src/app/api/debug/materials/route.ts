@@ -22,20 +22,27 @@ export async function GET() {
     });
 
     console.log('All materials in DB:', materials.length);
-    materials.forEach(material => {
-      console.log('Material:', material.title, 'Category:', material.category, 'Type:', material.type);
+    materials.forEach((material) => {
+      console.log(
+        'Material:',
+        material.title,
+        'Category:',
+        material.category,
+        'Type:',
+        material.type
+      );
     });
 
-    return NextResponse.json({ 
+    return NextResponse.json({
       count: materials.length,
-      materials: materials.map(m => ({
+      materials: materials.map((m) => ({
         id: m.id,
         title: m.title,
         slug: m.slug,
         category: m.category,
         type: m.type,
-        stepCount: m._count.steps
-      }))
+        stepCount: m._count.steps,
+      })),
     });
   } catch (error) {
     console.error('Debug API error:', error);

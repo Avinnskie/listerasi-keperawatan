@@ -7,7 +7,7 @@ import { TestEmptyQuestions } from '@/components/organisms/test-empty-questions'
 
 export default async function TestPage({
   params,
-  searchParams
+  searchParams,
 }: {
   params: Promise<{ slug: string }>;
   searchParams: Promise<{ type?: string }>;
@@ -19,7 +19,7 @@ export default async function TestPage({
   // Cari materi
   const materi = await prisma.materi.findUnique({
     where: { slug },
-    select: { id: true, title: true }
+    select: { id: true, title: true },
   });
 
   if (!materi) return notFound();
@@ -28,38 +28,20 @@ export default async function TestPage({
   const test = await prisma.test.findFirst({
     where: {
       materiId: materi.id,
-      type
+      type,
     },
-    include: { questions: true }
+    include: { questions: true },
   });
 
   // Check if test doesn't exist
   if (!test) {
-    return (
-      <TestNotAvailable
-        testType={type}
-        materiTitle={materi.title}
-        materiSlug={slug}
-      />
-    );
+    return <TestNotAvailable testType={type} materiTitle={materi.title} materiSlug={slug} />;
   }
 
   // Check if test exists but has no questions
   if (!test.questions || test.questions.length === 0) {
-    return (
-      <TestEmptyQuestions
-        testType={type}
-        materiTitle={materi.title}
-        materiSlug={slug}
-      />
-    );
+    return <TestEmptyQuestions testType={type} materiTitle={materi.title} materiSlug={slug} />;
   }
 
-  return (
-    <TestClientPage
-      materiTitle={materi.title}
-      type={type}
-      questions={test.questions}
-    />
-  );
+  return <TestClientPage materiTitle={materi.title} type={type} questions={test.questions} />;
 }

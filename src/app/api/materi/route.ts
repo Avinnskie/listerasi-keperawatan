@@ -21,10 +21,7 @@ export async function GET() {
     return NextResponse.json(materiList);
   } catch (error) {
     console.error(error);
-    return NextResponse.json(
-      { error: 'Internal Server Error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
 
@@ -33,17 +30,11 @@ export async function POST(request: NextRequest) {
     const { title, slug, category, type } = await request.json();
 
     if (!title || !slug || !category || !type) {
-      return NextResponse.json(
-        { error: 'Missing fields' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
     }
 
     if (!Object.values(MateriType).includes(type)) {
-      return NextResponse.json(
-        { error: 'Invalid materi type' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Invalid materi type' }, { status: 400 });
     }
 
     const materi = await prisma.materi.create({
@@ -58,9 +49,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(materi, { status: 201 });
   } catch (error) {
     console.error(error);
-    return NextResponse.json(
-      { error: 'Internal Server Error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

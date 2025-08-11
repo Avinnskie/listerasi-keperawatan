@@ -17,17 +17,16 @@ export const TestNotAvailable: React.FC<TestNotAvailableProps> = ({
   };
 
   const getTestTitle = () => {
-    return testType === 'PRE' 
-      ? `Pre Test Belum Tersedia` 
-      : `Post Test Belum Tersedia`;
+    return testType === 'PRE' ? `Pre Test Belum Tersedia` : `Post Test Belum Tersedia`;
   };
 
   const getTestDescription = () => {
     const testName = testType === 'PRE' ? 'pre test' : 'post test';
-    const suggestion = testType === 'PRE' 
-      ? 'Anda dapat langsung mempelajari materi dan mengerjakan post test setelahnya.'
-      : 'Pastikan Anda telah menyelesaikan seluruh materi sebelum mengerjakan post test.';
-    
+    const suggestion =
+      testType === 'PRE'
+        ? 'Anda dapat langsung mempelajari materi dan mengerjakan post test setelahnya.'
+        : 'Pastikan Anda telah menyelesaikan seluruh materi sebelum mengerjakan post test.';
+
     return `Maaf, ${testName} untuk materi "${materiTitle}" belum tersedia. Admin sedang menyiapkan soal-soal untuk test ini. ${suggestion}`;
   };
 

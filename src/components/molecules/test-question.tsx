@@ -25,11 +25,9 @@ export const TestQuestion: React.FC<TestQuestionProps> = ({
         <Text variant="small" color="secondary" className="font-medium">
           Pertanyaan {questionNumber} dari {totalQuestions}
         </Text>
-        <Heading className="text-xl font-semibold text-left text-gray-900">
-          {question}
-        </Heading>
+        <Heading className="text-xl font-semibold text-left text-gray-900">{question}</Heading>
       </div>
-      
+
       <div className="space-y-3">
         {options.map((option, index) => (
           <button

@@ -12,7 +12,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ slug: st
         { status: 400 }
       );
     }
-    
+
     const { slug } = await params;
     const materi = await prisma.materi.findUnique({
       where: { slug },

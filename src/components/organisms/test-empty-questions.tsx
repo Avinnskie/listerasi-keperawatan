@@ -17,9 +17,7 @@ export const TestEmptyQuestions: React.FC<TestEmptyQuestionsProps> = ({
   };
 
   const getTestTitle = () => {
-    return testType === 'PRE' 
-      ? `Pre Test Belum Memiliki Soal` 
-      : `Post Test Belum Memiliki Soal`;
+    return testType === 'PRE' ? `Pre Test Belum Memiliki Soal` : `Post Test Belum Memiliki Soal`;
   };
 
   const getTestDescription = () => {

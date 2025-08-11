@@ -79,9 +79,7 @@ export const MateriClientPage = ({
 
           <Progress value={progressValue} className="w-full" />
 
-          <article
-            className="w-full prose max-w-none mt-4"
-          >
+          <article className="w-full prose max-w-none mt-4">
             {materi.type === 'PENGANTAR' && step === 0 && (
               <div className="mb-4">
                 <Button onClick={handlePreTest}>Kerjakan Pre Test</Button>
@@ -107,7 +105,11 @@ export const MateriClientPage = ({
             ) : materi.postTest ? (
               <Button onClick={handlePostTest}>Kerjakan Post Test</Button>
             ) : (
-              <Button onClick={() => toast.success('Selamat! Anda telah menyelesaikan materi ini! 🎓')}>Selesai</Button>
+              <Button
+                onClick={() => toast.success('Selamat! Anda telah menyelesaikan materi ini! 🎓')}
+              >
+                Selesai
+              </Button>
             )}
           </div>
         </div>

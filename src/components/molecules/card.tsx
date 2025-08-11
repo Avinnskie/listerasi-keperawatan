@@ -28,10 +28,10 @@ export const Card: React.FC<CardProps> = ({
   const borderStyles = border ? 'border border-gray-200' : '';
 
   return (
-    <div className={`${baseStyles} ${paddingStyles[padding]} ${shadowStyles} ${borderStyles} ${className}`}>
-      {title && (
-        <h3 className="text-xl font-semibold mb-4 text-gray-900">{title}</h3>
-      )}
+    <div
+      className={`${baseStyles} ${paddingStyles[padding]} ${shadowStyles} ${borderStyles} ${className}`}
+    >
+      {title && <h3 className="text-xl font-semibold mb-4 text-gray-900">{title}</h3>}
       {children}
     </div>
   );

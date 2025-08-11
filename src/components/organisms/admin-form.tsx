@@ -50,12 +50,12 @@ export const AdminForm: React.FC<AdminFormProps> = ({
             max={field.max}
           />
         ))}
-        
+
         {children}
-        
+
         <div className="pt-2">
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             className={`${submitColor} text-white px-6 py-2 rounded-md font-semibold hover:opacity-90 transition-opacity`}
           >
             {submitText}

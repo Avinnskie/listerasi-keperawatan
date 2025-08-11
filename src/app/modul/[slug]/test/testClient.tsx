@@ -17,7 +17,7 @@ type Question = {
 export default function TestClientPage({
   materiTitle,
   type,
-  questions
+  questions,
 }: {
   materiTitle: string;
   type: 'PRE' | 'POST';
@@ -48,12 +48,10 @@ export default function TestClientPage({
       setCurrentIndex((prev) => prev + 1);
     } else {
       // Hitung score berdasarkan jawaban yang benar
-      const correct = questions.filter(
-        (q, i) => {
-          // Pastikan jawaban sudah dipilih dan cocok dengan jawaban yang benar
-          return answers[i] !== undefined && answers[i] === q.answer;
-        }
-      ).length;
+      const correct = questions.filter((q, i) => {
+        // Pastikan jawaban sudah dipilih dan cocok dengan jawaban yang benar
+        return answers[i] !== undefined && answers[i] === q.answer;
+      }).length;
       const finalScore = Math.floor((correct / questions.length) * 100);
       setScore(finalScore);
       toast.success('Test berhasil diselesaikan! 🎉');
@@ -96,11 +94,7 @@ export default function TestClientPage({
       </div>
 
       <div className="flex justify-between mt-8">
-        <Button 
-          onClick={handlePrevious}
-          variant="outline"
-          disabled={currentIndex === 0}
-        >
+        <Button onClick={handlePrevious} variant="outline" disabled={currentIndex === 0}>
           Sebelumnya
         </Button>
         <Button onClick={handleNext}>

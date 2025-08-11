@@ -48,7 +48,7 @@ export const FormField: React.FC<FormFieldProps> = ({
           {label}
         </Label>
       )}
-      
+
       {type === 'input' ? (
         <Input
           type={inputType}
@@ -70,10 +70,8 @@ export const FormField: React.FC<FormFieldProps> = ({
           disabled={disabled}
         />
       )}
-      
-      {error && (
-        <p className="text-sm text-red-600">{error}</p>
-      )}
+
+      {error && <p className="text-sm text-red-600">{error}</p>}
     </div>
   );
 };

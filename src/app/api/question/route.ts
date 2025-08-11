@@ -6,10 +6,7 @@ export async function POST(request: NextRequest) {
     const { testId, question, options, answer } = await request.json();
 
     if (!testId || !question || !options || !Array.isArray(options) || answer === undefined) {
-      return NextResponse.json(
-        { error: 'Missing or invalid fields' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Missing or invalid fields' }, { status: 400 });
     }
 
     const createdQuestion = await prisma.question.create({
@@ -20,13 +17,10 @@ export async function POST(request: NextRequest) {
         answer: Number(answer),
       },
     });
-    
+
     return NextResponse.json(createdQuestion, { status: 201 });
   } catch (error) {
     console.error(error);
-    return NextResponse.json(
-      { error: 'Failed to create question' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to create question' }, { status: 500 });
   }
 }

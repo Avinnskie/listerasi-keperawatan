@@ -25,19 +25,17 @@ export const Loading: React.FC<LoadingProps> = ({
     lg: 'text-lg',
   };
 
-  const containerClass = fullScreen 
-    ? 'min-h-screen flex items-center justify-center' 
+  const containerClass = fullScreen
+    ? 'min-h-screen flex items-center justify-center'
     : 'flex items-center justify-center p-4';
 
   return (
     <div className={`${containerClass} ${className}`}>
       <div className="flex flex-col items-center space-y-3">
-        <div className={`${sizeStyles[size]} animate-spin rounded-full border-2 border-gray-300 border-t-green-600`} />
-        {text && (
-          <p className={`${textSizes[size]} text-gray-600 font-medium`}>
-            {text}
-          </p>
-        )}
+        <div
+          className={`${sizeStyles[size]} animate-spin rounded-full border-2 border-gray-300 border-t-green-600`}
+        />
+        {text && <p className={`${textSizes[size]} text-gray-600 font-medium`}>{text}</p>}
       </div>
     </div>
   );

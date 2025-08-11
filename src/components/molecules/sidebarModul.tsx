@@ -41,9 +41,7 @@ const SidebarContent = ({ materiList }: { materiList: SidebarModulProps['materiL
   if (!materiList || !Array.isArray(materiList) || materiList.length === 0) {
     return (
       <nav className="space-y-4">
-        <div className="text-sm text-gray-500 text-center py-4">
-          Tidak ada materi tersedia
-        </div>
+        <div className="text-sm text-gray-500 text-center py-4">Tidak ada materi tersedia</div>
       </nav>
     );
   }
@@ -54,12 +52,7 @@ const SidebarContent = ({ materiList }: { materiList: SidebarModulProps['materiL
     return acc;
   }, {});
 
-  const kesehatanOrder = [
-    'pendahuluan-covid-19',
-    'covid-19',
-    'sars-cov-2',
-    'imunisasi-covid-19',
-  ];
+  const kesehatanOrder = ['pendahuluan-covid-19', 'covid-19', 'sars-cov-2', 'imunisasi-covid-19'];
 
   Object.keys(grouped).forEach((category) => {
     if (category.toLowerCase() === 'kesehatan') {
