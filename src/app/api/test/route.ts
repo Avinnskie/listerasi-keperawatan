@@ -61,7 +61,7 @@ export async function PUT(request: NextRequest) {
   try {
     const url = new URL(request.url);
     const id = url.searchParams.get('id');
-    
+
     if (!id) {
       return NextResponse.json({ error: 'ID is required' }, { status: 400 });
     }
@@ -78,9 +78,9 @@ export async function PUT(request: NextRequest) {
 
     const test = await prisma.test.update({
       where: { id },
-      data: { 
-        type, 
-        materiId 
+      data: {
+        type,
+        materiId,
       },
     });
 
@@ -95,7 +95,7 @@ export async function DELETE(request: NextRequest) {
   try {
     const url = new URL(request.url);
     const id = url.searchParams.get('id');
-    
+
     if (!id) {
       return NextResponse.json({ error: 'ID is required' }, { status: 400 });
     }

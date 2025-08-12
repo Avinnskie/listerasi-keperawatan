@@ -154,7 +154,9 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({ open, onOpenChange }
                           <div className="flex flex-wrap items-center gap-2 md:gap-4 text-xs text-gray-500">
                             <span className="flex items-center">
                               <FolderIcon className="h-3 w-3 mr-1" />
-                              <span className="truncate max-w-[100px] sm:max-w-[150px]">{material.category}</span>
+                              <span className="truncate max-w-[100px] sm:max-w-[150px]">
+                                {material.category}
+                              </span>
                             </span>
                             <span className="flex items-center">
                               <BookOpenIcon className="h-3 w-3 mr-1" />

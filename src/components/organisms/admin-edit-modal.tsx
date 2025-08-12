@@ -30,8 +30,8 @@ interface EditModalProps {
   onClose: () => void;
   type: 'materi' | 'step' | 'test' | 'question';
   item: Record<string, unknown> | null;
-  materiList?: Array<{ id: string; title: string; type: string; }>;
-  testList?: Array<{ id: string; type: string; materiId: string; }>;
+  materiList?: Array<{ id: string; title: string; type: string }>;
+  testList?: Array<{ id: string; type: string; materiId: string }>;
   onSave: (data: unknown) => Promise<void>;
 }
 
@@ -42,7 +42,7 @@ export function AdminEditModal({
   item,
   materiList = [],
   testList = [],
-  onSave
+  onSave,
 }: EditModalProps) {
   const [formData, setFormData] = useState<Record<string, unknown>>({});
   const [isSaving, setIsSaving] = useState(false);
@@ -56,7 +56,7 @@ export function AdminEditModal({
   const handleInputChange = (field: string, value: unknown) => {
     setFormData((prev: Record<string, unknown>) => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
   };
 
@@ -77,11 +77,16 @@ export function AdminEditModal({
 
   const getTypeLabel = (type: string) => {
     switch (type) {
-      case 'materi': return 'Materi';
-      case 'step': return 'Step';
-      case 'test': return 'Test';
-      case 'question': return 'Question';
-      default: return 'Item';
+      case 'materi':
+        return 'Materi';
+      case 'step':
+        return 'Step';
+      case 'test':
+        return 'Test';
+      case 'question':
+        return 'Question';
+      default:
+        return 'Item';
     }
   };
 
@@ -255,7 +260,7 @@ export function AdminEditModal({
                 </SelectTrigger>
                 <SelectContent>
                   {testList.map((test) => {
-                    const materi = materiList.find(m => m.id === test.materiId);
+                    const materi = materiList.find((m) => m.id === test.materiId);
                     return (
                       <SelectItem key={test.id} value={test.id}>
                         {materi?.title} - {test.type} Test
@@ -280,28 +285,32 @@ export function AdminEditModal({
 
             <div className="space-y-3">
               <Label>Opsi Jawaban *</Label>
-              {((formData.options as string[]) || ['', '', '', '']).map((option: string, index: number) => (
-                <div key={index} className="flex items-center gap-3">
-                  <span className="font-medium w-6">{index}.</span>
-                  <Input
-                    value={option}
-                    onChange={(e) => {
-                      const newOptions = [...((formData.options as string[]) || ['', '', '', ''])];
-                      newOptions[index] = e.target.value;
-                      handleInputChange('options', newOptions);
-                    }}
-                    placeholder={`Opsi ${index + 1}`}
-                    required
-                  />
-                  <input
-                    type="radio"
-                    name="correct-answer"
-                    checked={formData.answer === index}
-                    onChange={() => handleInputChange('answer', index)}
-                    className="w-5 h-5"
-                  />
-                </div>
-              ))}
+              {((formData.options as string[]) || ['', '', '', '']).map(
+                (option: string, index: number) => (
+                  <div key={index} className="flex items-center gap-3">
+                    <span className="font-medium w-6">{index}.</span>
+                    <Input
+                      value={option}
+                      onChange={(e) => {
+                        const newOptions = [
+                          ...((formData.options as string[]) || ['', '', '', '']),
+                        ];
+                        newOptions[index] = e.target.value;
+                        handleInputChange('options', newOptions);
+                      }}
+                      placeholder={`Opsi ${index + 1}`}
+                      required
+                    />
+                    <input
+                      type="radio"
+                      name="correct-answer"
+                      checked={formData.answer === index}
+                      onChange={() => handleInputChange('answer', index)}
+                      className="w-5 h-5"
+                    />
+                  </div>
+                )
+              )}
               <p className="text-sm text-gray-600">
                 Pilih radio button untuk menentukan jawaban yang benar
               </p>

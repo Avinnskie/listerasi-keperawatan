@@ -98,10 +98,10 @@ export default function AdminMateriPage() {
   const [editingTest, setEditingTest] = useState<Test | null>(null);
   const [editingQuestion, setEditingQuestion] = useState<Question | null>(null);
 
-  // Loading states (commented out unused variables to avoid warnings)
-  // const [isLoadingSteps, setIsLoadingSteps] = useState(false);
-  // const [isLoadingTests, setIsLoadingTests] = useState(false);
-  // const [isLoadingQuestions, setIsLoadingQuestions] = useState(false);
+  // Loading states
+  const [isLoadingSteps, setIsLoadingSteps] = useState(false);
+  const [isLoadingTests, setIsLoadingTests] = useState(false);
+  const [isLoadingQuestions, setIsLoadingQuestions] = useState(false);
 
   useEffect(() => {
     fetchMateriList();
@@ -157,6 +157,7 @@ export default function AdminMateriPage() {
   };
 
   const fetchStepList = async () => {
+    setIsLoadingSteps(true);
     try {
       const res = await fetch('/api/step');
       if (!res.ok) throw new Error('Failed to fetch steps');
@@ -165,10 +166,13 @@ export default function AdminMateriPage() {
     } catch (error) {
       toast.error(`Error fetching steps: ${String(error)}`);
       console.error(error);
+    } finally {
+      setIsLoadingSteps(false);
     }
   };
 
   const fetchAllTests = async () => {
+    setIsLoadingTests(true);
     try {
       const res = await fetch('/api/test');
       if (!res.ok) throw new Error('Failed to fetch tests');
@@ -177,10 +181,13 @@ export default function AdminMateriPage() {
     } catch (error) {
       toast.error(`Error fetching tests: ${String(error)}`);
       console.error(error);
+    } finally {
+      setIsLoadingTests(false);
     }
   };
 
   const fetchQuestionList = async () => {
+    setIsLoadingQuestions(true);
     try {
       const res = await fetch('/api/question');
       if (!res.ok) throw new Error('Failed to fetch questions');
@@ -189,6 +196,8 @@ export default function AdminMateriPage() {
     } catch (error) {
       toast.error(`Error fetching questions: ${String(error)}`);
       console.error(error);
+    } finally {
+      setIsLoadingQuestions(false);
     }
   };
 
@@ -321,7 +330,6 @@ export default function AdminMateriPage() {
     setOptions(newOptions);
   };
 
-  // Edit handlers
   const handleEditMateri = async (data: unknown) => {
     const materiData = data as Materi;
     const res = await fetch(`/api/materi?id=${materiData.id}`, {
@@ -366,7 +374,6 @@ export default function AdminMateriPage() {
     await fetchQuestionList();
   };
 
-  // Delete handlers
   const handleDeleteMateri = async (item: Materi) => {
     const res = await fetch(`/api/materi?id=${item.id}`, {
       method: 'DELETE',

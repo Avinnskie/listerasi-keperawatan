@@ -59,16 +59,20 @@ const SidebarContent = ({ materiList }: { materiList: SidebarModulProps['materiL
       // First priority: 'PENGANTAR' type materials always come first
       if (a.type === 'PENGANTAR' && b.type !== 'PENGANTAR') return -1;
       if (a.type !== 'PENGANTAR' && b.type === 'PENGANTAR') return 1;
-      
+
       // Second priority: For 'kesehatan' category, use predefined order for non-pengantar items
-      if (category.toLowerCase() === 'kesehatan' && a.type !== 'PENGANTAR' && b.type !== 'PENGANTAR') {
+      if (
+        category.toLowerCase() === 'kesehatan' &&
+        a.type !== 'PENGANTAR' &&
+        b.type !== 'PENGANTAR'
+      ) {
         const aIndex = kesehatanOrder.indexOf(a.slug);
         const bIndex = kesehatanOrder.indexOf(b.slug);
         if (aIndex !== -1 && bIndex !== -1) {
           return aIndex - bIndex;
         }
       }
-      
+
       // Default: sort by title alphabetically for materials of the same type
       return a.title.localeCompare(b.title);
     });

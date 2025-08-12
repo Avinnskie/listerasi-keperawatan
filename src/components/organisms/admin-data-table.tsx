@@ -52,26 +52,29 @@ export function AdminDataTable<T extends BaseEntity>({
   onEdit,
   onDelete,
   onAdd,
-  searchPlaceholder = "Cari data...",
+  searchPlaceholder = 'Cari data...',
   searchFields = [],
   itemsPerPage = 10,
 }: AdminDataTableProps<T>) {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' } | null>(null);
+  const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' } | null>(
+    null
+  );
   const [deleteItem, setDeleteItem] = useState<T | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
   const filteredData = data.filter((item) => {
     if (!searchTerm) return true;
-    
+
     const searchLower = searchTerm.toLowerCase();
-    
-    const fieldsToSearch = searchFields.length > 0 
-      ? searchFields 
-      : Object.keys(item).filter(key => typeof item[key] === 'string');
-    
-    return fieldsToSearch.some(field => {
+
+    const fieldsToSearch =
+      searchFields.length > 0
+        ? searchFields
+        : Object.keys(item).filter((key) => typeof item[key] === 'string');
+
+    return fieldsToSearch.some((field) => {
       const value = item[field];
       return value && value.toString().toLowerCase().includes(searchLower);
     });
@@ -79,14 +82,14 @@ export function AdminDataTable<T extends BaseEntity>({
 
   const sortedData = [...filteredData].sort((a, b) => {
     if (!sortConfig) return 0;
-    
+
     const aValue = a[sortConfig.key];
     const bValue = b[sortConfig.key];
-    
+
     // Convert to string for safe comparison
     const aString = String(aValue ?? '').toLowerCase();
     const bString = String(bValue ?? '').toLowerCase();
-    
+
     if (aString < bString) return sortConfig.direction === 'asc' ? -1 : 1;
     if (aString > bString) return sortConfig.direction === 'asc' ? 1 : -1;
     return 0;
@@ -97,15 +100,15 @@ export function AdminDataTable<T extends BaseEntity>({
   const paginatedData = sortedData.slice(startIndex, startIndex + itemsPerPage);
 
   const handleSort = (key: string) => {
-    setSortConfig(current => ({
+    setSortConfig((current) => ({
       key,
-      direction: current?.key === key && current.direction === 'asc' ? 'desc' : 'asc'
+      direction: current?.key === key && current.direction === 'asc' ? 'desc' : 'asc',
     }));
   };
 
   const handleDelete = async () => {
     if (!deleteItem || !onDelete) return;
-    
+
     setIsDeleting(true);
     try {
       await onDelete(deleteItem);
@@ -132,7 +135,7 @@ export function AdminDataTable<T extends BaseEntity>({
               Menampilkan {paginatedData.length} dari {sortedData.length} data
             </p>
           </div>
-          
+
           <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -146,7 +149,6 @@ export function AdminDataTable<T extends BaseEntity>({
                 className="pl-10 w-full sm:w-64"
               />
             </div>
-            
           </div>
         </div>
       </div>
@@ -158,22 +160,18 @@ export function AdminDataTable<T extends BaseEntity>({
               {columns.map((column) => (
                 <TableHead
                   key={column.key}
-                  className={column.sortable ? "cursor-pointer hover:bg-gray-50" : ""}
+                  className={column.sortable ? 'cursor-pointer hover:bg-gray-50' : ''}
                   onClick={() => column.sortable && handleSort(column.key)}
                 >
                   <div className="flex items-center gap-1">
                     {column.label}
                     {column.sortable && sortConfig?.key === column.key && (
-                      <span className="text-xs">
-                        {sortConfig.direction === 'asc' ? '↑' : '↓'}
-                      </span>
+                      <span className="text-xs">{sortConfig.direction === 'asc' ? '↑' : '↓'}</span>
                     )}
                   </div>
                 </TableHead>
               ))}
-              {(onEdit || onDelete) && (
-                <TableHead className="text-right">Aksi</TableHead>
-              )}
+              {(onEdit || onDelete) && <TableHead className="text-right">Aksi</TableHead>}
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -234,7 +232,7 @@ export function AdminDataTable<T extends BaseEntity>({
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
                 disabled={currentPage === 1}
               >
                 <ChevronLeft className="h-4 w-4" />
@@ -243,7 +241,7 @@ export function AdminDataTable<T extends BaseEntity>({
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
                 disabled={currentPage === totalPages}
               >
                 Selanjutnya
@@ -260,18 +258,15 @@ export function AdminDataTable<T extends BaseEntity>({
           <DialogHeader>
             <DialogTitle>Konfirmasi Hapus</DialogTitle>
             <DialogDescription>
-              Apakah Anda yakin ingin menghapus {title.toLowerCase()} ini? Tindakan ini tidak dapat dibatalkan.
+              Apakah Anda yakin ingin menghapus {title.toLowerCase()} ini? Tindakan ini tidak dapat
+              dibatalkan.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button variant="outline" onClick={() => setDeleteItem(null)} disabled={isDeleting}>
               Batal
             </Button>
-            <Button 
-              variant="destructive" 
-              onClick={handleDelete} 
-              disabled={isDeleting}
-            >
+            <Button variant="destructive" onClick={handleDelete} disabled={isDeleting}>
               {isDeleting ? 'Menghapus...' : 'Hapus'}
             </Button>
           </DialogFooter>

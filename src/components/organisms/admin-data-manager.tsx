@@ -125,7 +125,7 @@ export const AdminDataManager: React.FC<AdminDataManagerProps> = ({
           setLoading(false);
           return;
       }
-      
+
       const res = await fetch(endpoint);
       if (res.ok) {
         const result = await res.json();
@@ -139,7 +139,7 @@ export const AdminDataManager: React.FC<AdminDataManagerProps> = ({
 
   const handleEdit = (item: Materi | Step | Test | Question) => {
     setEditingItem(item);
-    
+
     // Pre-fill form based on type
     switch (type) {
       case 'materi': {
@@ -173,7 +173,7 @@ export const AdminDataManager: React.FC<AdminDataManagerProps> = ({
         break;
       }
     }
-    
+
     setShowEditModal(true);
   };
 
@@ -183,7 +183,7 @@ export const AdminDataManager: React.FC<AdminDataManagerProps> = ({
 
     try {
       let updateData: Record<string, unknown> = {};
-      
+
       switch (type) {
         case 'materi':
           updateData = {
@@ -264,9 +264,13 @@ export const AdminDataManager: React.FC<AdminDataManagerProps> = ({
                 <h3 className="font-semibold text-lg">{materiItem.title}</h3>
                 <p className="text-sm text-gray-600">Slug: {materiItem.slug}</p>
                 <p className="text-sm text-gray-600">Kategori: {materiItem.category}</p>
-                <span className={`inline-block px-2 py-1 rounded text-xs ${
-                  materiItem.type === 'PENGANTAR' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
-                }`}>
+                <span
+                  className={`inline-block px-2 py-1 rounded text-xs ${
+                    materiItem.type === 'PENGANTAR'
+                      ? 'bg-blue-100 text-blue-800'
+                      : 'bg-green-100 text-green-800'
+                  }`}
+                >
                   {materiItem.type === 'PENGANTAR' ? 'Pengantar' : 'Sub Materi'}
                 </span>
               </div>
@@ -375,7 +379,10 @@ export const AdminDataManager: React.FC<AdminDataManagerProps> = ({
                 <div className="mt-2 text-sm">
                   <p className="font-medium">Opsi:</p>
                   {questionItem.options.map((option: string, idx: number) => (
-                    <p key={idx} className={`ml-2 ${idx === questionItem.answer ? 'text-green-600 font-medium' : 'text-gray-600'}`}>
+                    <p
+                      key={idx}
+                      className={`ml-2 ${idx === questionItem.answer ? 'text-green-600 font-medium' : 'text-gray-600'}`}
+                    >
                       {idx}. {option} {idx === questionItem.answer && '(Benar)'}
                     </p>
                   ))}
@@ -610,7 +617,9 @@ export const AdminDataManager: React.FC<AdminDataManagerProps> = ({
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h2 className="text-xl font-semibold">Kelola {type.charAt(0).toUpperCase() + type.slice(1)}</h2>
+        <h2 className="text-xl font-semibold">
+          Kelola {type.charAt(0).toUpperCase() + type.slice(1)}
+        </h2>
         <button
           onClick={() => setShowList(!showList)}
           className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
@@ -627,9 +636,7 @@ export const AdminDataManager: React.FC<AdminDataManagerProps> = ({
           ) : data.length === 0 ? (
             <p className="text-center py-4 text-gray-500">Belum ada data {type}</p>
           ) : (
-            <div className="space-y-4 max-h-96 overflow-y-auto">
-              {data.map(renderListItem)}
-            </div>
+            <div className="space-y-4 max-h-96 overflow-y-auto">{data.map(renderListItem)}</div>
           )}
         </div>
       )}
@@ -638,11 +645,13 @@ export const AdminDataManager: React.FC<AdminDataManagerProps> = ({
       {showEditModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <h3 className="text-lg font-semibold mb-4">Edit {type.charAt(0).toUpperCase() + type.slice(1)}</h3>
-            
+            <h3 className="text-lg font-semibold mb-4">
+              Edit {type.charAt(0).toUpperCase() + type.slice(1)}
+            </h3>
+
             <form onSubmit={handleUpdate}>
               {renderEditForm()}
-              
+
               <div className="flex justify-end gap-2 mt-6">
                 <button
                   type="button"
