@@ -517,12 +517,12 @@ export default function AdminMateriPage() {
               {
                 key: 'title',
                 label: 'Judul',
-                sortable: true
+                sortable: true,
               },
               {
                 key: 'category',
                 label: 'Kategori',
-                sortable: true
+                sortable: true,
               },
               {
                 key: 'type',
@@ -532,12 +532,12 @@ export default function AdminMateriPage() {
                     {item.type === 'PENGANTAR' ? 'Pengantar' : 'Sub Materi'}
                   </Badge>
                 ),
-                sortable: true
+                sortable: true,
               },
               {
                 key: 'slug',
-                label: 'Slug'
-              }
+                label: 'Slug',
+              },
             ]}
             onEdit={(item) => setEditingMateri(item)}
             onDelete={handleDeleteMateri}
@@ -552,12 +552,12 @@ export default function AdminMateriPage() {
               {
                 key: 'title',
                 label: 'Judul Step',
-                sortable: true
+                sortable: true,
               },
               {
                 key: 'order',
                 label: 'Urutan',
-                sortable: true
+                sortable: true,
               },
               {
                 key: 'materi',
@@ -569,7 +569,7 @@ export default function AdminMateriPage() {
                       {item.materi?.type === 'PENGANTAR' ? 'Pengantar' : 'Sub Materi'}
                     </div>
                   </div>
-                )
+                ),
               },
               {
                 key: 'content',
@@ -580,8 +580,8 @@ export default function AdminMateriPage() {
                       {item.content?.substring(0, 100) || 'Tidak ada konten'}...
                     </p>
                   </div>
-                )
-              }
+                ),
+              },
             ]}
             onEdit={(item) => setEditingStep(item)}
             onDelete={handleDeleteStep}
@@ -762,7 +762,7 @@ export default function AdminMateriPage() {
                     {item.type} Test
                   </Badge>
                 ),
-                sortable: true
+                sortable: true,
               },
               {
                 key: 'materi',
@@ -774,17 +774,15 @@ export default function AdminMateriPage() {
                       {item.materi?.type === 'PENGANTAR' ? 'Pengantar' : 'Sub Materi'}
                     </div>
                   </div>
-                )
+                ),
               },
               {
                 key: 'questions',
                 label: 'Jumlah Soal',
                 render: (item) => (
-                  <Badge variant="outline">
-                    {item.questions?.length || 0} soal
-                  </Badge>
-                )
-              }
+                  <Badge variant="outline">{item.questions?.length || 0} soal</Badge>
+                ),
+              },
             ]}
             onEdit={(item) => setEditingTest(item)}
             onDelete={handleDeleteTest}
@@ -805,21 +803,22 @@ export default function AdminMateriPage() {
                     <p className="truncate">{item.question}</p>
                   </div>
                 ),
-                sortable: true
+                sortable: true,
               },
               {
                 key: 'test',
                 label: 'Test',
                 render: (item) => (
                   <div>
-                    <div className="font-medium">
-                      {item.test?.materi?.title || 'Loading...'}
-                    </div>
-                    <Badge variant={item.test?.type === 'PRE' ? 'default' : 'secondary'} className="text-xs">
+                    <div className="font-medium">{item.test?.materi?.title || 'Loading...'}</div>
+                    <Badge
+                      variant={item.test?.type === 'PRE' ? 'default' : 'secondary'}
+                      className="text-xs"
+                    >
                       {item.test?.type} Test
                     </Badge>
                   </div>
-                )
+                ),
               },
               {
                 key: 'answer',
@@ -828,17 +827,13 @@ export default function AdminMateriPage() {
                   <div className="text-center">
                     <Badge variant="outline">Opsi {item.answer}</Badge>
                   </div>
-                )
+                ),
               },
               {
                 key: 'options',
                 label: 'Jumlah Opsi',
-                render: (item) => (
-                  <Badge variant="outline">
-                    {item.options?.length || 0} opsi
-                  </Badge>
-                )
-              }
+                render: (item) => <Badge variant="outline">{item.options?.length || 0} opsi</Badge>,
+              },
             ]}
             onEdit={(item) => setEditingQuestion(item)}
             onDelete={handleDeleteQuestion}
