@@ -33,7 +33,7 @@ export const AdminForm: React.FC<AdminFormProps> = ({
   children,
 }) => {
   return (
-    <Card title={title} className="max-w-4xl">
+    <Card title={title} className="w-full">
       <form onSubmit={onSubmit} className="space-y-4">
         {fields.map((field, index) => (
           <FormField

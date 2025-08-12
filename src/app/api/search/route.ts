@@ -72,11 +72,6 @@ export async function GET(request: NextRequest) {
       take: 10,
     });
 
-    console.log('Raw materials from DB:', materials.length);
-    if (materials.length > 0) {
-      console.log('First material:', materials[0]);
-    }
-
     const transformedMaterials = materials.map((material) => ({
       id: material.id,
       title: material.title,
@@ -88,7 +83,6 @@ export async function GET(request: NextRequest) {
       _count: material._count,
     }));
 
-    console.log('Transformed materials:', transformedMaterials.length);
     return NextResponse.json({ materials: transformedMaterials });
   } catch (error) {
     console.error('Search error:', error);

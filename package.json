@@ -16,7 +16,9 @@
   "dependencies": {
     "@prisma/client": "^6.13.0",
     "@radix-ui/react-dialog": "^1.1.14",
+    "@radix-ui/react-label": "^2.1.7",
     "@radix-ui/react-progress": "^1.1.7",
+    "@radix-ui/react-select": "^2.2.5",
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-tabs": "^1.1.12",
     "@tailwindcss/typography": "^0.5.16",
@@ -27,7 +29,7 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "framer-motion": "^12.23.12",
-    "lucide-react": "^0.536.0",
+    "lucide-react": "^0.539.0",
     "next": "15.4.5",
     "next-auth": "^4.24.11",
     "next-themes": "^0.4.6",

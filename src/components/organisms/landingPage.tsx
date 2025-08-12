@@ -29,10 +29,10 @@ export const LandingHero = () => {
       </div>
 
       <div className="text-center max-w-2xl">
-        <Heading className="text-3xl md:text-5xl leading-tight">
+        <Heading className="text-3xl md:text-4xl leading-tight">
           Selamat Datang di Literasi Keperawatan
         </Heading>
-        <Paragraph className="text-sm md:text-lg mt-4">
+        <Paragraph className="text-sm md:text-[16px] mt-4">
           Platform ini dirancang untuk kader dan masyarakat yang ingin belajar lebih dalam mengenai
           topik-topik kesehatan penting. Temukan berbagai modul yang mencakup topik-topik penting
           seperti kesehatan kardiovaskular, informasi terkini tentang COVID-19, dan dasar-dasar
@@ -48,14 +48,14 @@ export const LandingHero = () => {
 
       <div className="hidden md:flex flex-wrap justify-center items-center md:pt-8 lg:pt-0 md:gap-24 lg:gap-44 mt-20 relative z-10">
         <ModuleCard
-          classname="md:w-52 md:h-52 lg:w-72 lg:h-72"
+          classname="md:w-52 md:h-52 lg:w-64 lg:h-64"
           imageUrl="/img/kardiovaskular.png"
         />
         <ModuleCard
-          classname="md:w-52 md:h-52 lg:w-72 lg:h-72 absolute -translate-y-16 z-10"
+          classname="md:w-52 md:h-52 lg:w-64 lg:h-64 absolute -translate-y-16 z-10"
           imageUrl="/img/covid-19.png"
         />
-        <ModuleCard classname="md:w-52 md:h-52 lg:w-72 lg:h-72" imageUrl="/img/perawatan.png" />
+        <ModuleCard classname="md:w-52 md:h-52 lg:w-64 lg:h-64" imageUrl="/img/perawatan.png" />
       </div>
     </section>
   );

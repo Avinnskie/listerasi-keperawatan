@@ -89,7 +89,7 @@ export default function TestClientPage({
         ))}
       </div>
 
-      <div className="flex justify-between mt-8">
+      <div className="w-full flex justify-between mt-8">
         <Button onClick={handlePrevious} variant="outline" disabled={currentIndex === 0}>
           Sebelumnya
         </Button>

@@ -16,6 +16,8 @@ export const SearchButton: React.FC<SearchButtonProps> = ({
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
+    if (variant !== 'desktop') return;
+
     const down = (e: KeyboardEvent) => {
       if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
@@ -25,7 +27,7 @@ export const SearchButton: React.FC<SearchButtonProps> = ({
 
     document.addEventListener('keydown', down);
     return () => document.removeEventListener('keydown', down);
-  }, []);
+  }, [variant]);
 
   const handleOpen = () => {
     setOpen(true);

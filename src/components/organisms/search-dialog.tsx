@@ -83,8 +83,7 @@ export function SearchDialog({
           {results.map((material) => (
             <CommandItem
               key={material.id}
-              onSelect={(e) => {
-                e.preventDefault();
+              onSelect={() => {
                 handleSelect(material.slug);
               }}
             >

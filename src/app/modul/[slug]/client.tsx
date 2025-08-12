@@ -45,7 +45,8 @@ export const MateriClientPage = ({
   const [step, setStep] = useState(0);
 
   const totalSteps = materi.steps.length;
-  const progressValue = Math.floor((step / totalSteps) * 100);
+  // Progress berdasarkan step yang sedang dikerjakan (step saat ini + 1 karena step dimulai dari 0)
+  const progressValue = Math.floor(((step + 1) / totalSteps) * 100);
 
   const handlePreTest = () => {
     router.push(`/modul/${materi.slug}/test?type=PRE`);

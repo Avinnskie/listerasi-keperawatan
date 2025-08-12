@@ -46,7 +46,7 @@ export default function Modul() {
           Buka
         </button>
       </div>
-
+      
       <SidebarModul
         sidebarOpen={sidebarOpen}
         setSidebarOpen={setSidebarOpen}

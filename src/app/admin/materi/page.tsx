@@ -5,7 +5,10 @@ import dynamic from 'next/dynamic';
 import { toast } from 'sonner';
 import { AdminPageTemplate } from '@/components/templates';
 import { AdminForm } from '@/components/organisms';
+import { AdminDataTable } from '@/components/organisms/admin-data-table';
+import { AdminEditModal } from '@/components/organisms/admin-edit-modal';
 import { Label } from '@/components/atoms';
+import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false });
@@ -18,11 +21,35 @@ type Materi = {
   category: string;
 };
 
+type Step = {
+  id: string;
+  title: string;
+  content: string;
+  order: number;
+  materiId: string;
+  materi?: {
+    id: string;
+    title: string;
+    type: string;
+  };
+};
+
 type Question = {
   id: string;
   question: string;
   options: string[];
   answer: number;
+  testId: string;
+  test?: {
+    id: string;
+    type: string;
+    materiId: string;
+    materi?: {
+      id: string;
+      title: string;
+      type: string;
+    };
+  };
 };
 
 type Test = {
@@ -30,13 +57,21 @@ type Test = {
   type: 'PRE' | 'POST';
   materiId: string;
   questions?: Question[];
+  materi?: {
+    id: string;
+    title: string;
+    type: string;
+  };
 };
 
 export default function AdminMateriPage() {
   const [materiList, setMateriList] = useState<Materi[]>([]);
+  const [stepList, setStepList] = useState<Step[]>([]);
   const [testList, setTestList] = useState<Test[]>([]);
+  const [questionList, setQuestionList] = useState<Question[]>([]);
   const [activeTab, setActiveTab] = useState('konten');
 
+  // Form states
   const [title, setTitle] = useState('');
   const [slug, setSlug] = useState('');
   const [category, setCategory] = useState('');
@@ -57,9 +92,29 @@ export default function AdminMateriPage() {
   const [options, setOptions] = useState(['', '', '', '']);
   const [answerIndex, setAnswerIndex] = useState(0);
 
+  // Edit states
+  const [editingMateri, setEditingMateri] = useState<Materi | null>(null);
+  const [editingStep, setEditingStep] = useState<Step | null>(null);
+  const [editingTest, setEditingTest] = useState<Test | null>(null);
+  const [editingQuestion, setEditingQuestion] = useState<Question | null>(null);
+
+  // Loading states (commented out unused variables to avoid warnings)
+  // const [isLoadingSteps, setIsLoadingSteps] = useState(false);
+  // const [isLoadingTests, setIsLoadingTests] = useState(false);
+  // const [isLoadingQuestions, setIsLoadingQuestions] = useState(false);
+
   useEffect(() => {
     fetchMateriList();
   }, []);
+
+  useEffect(() => {
+    if (activeTab === 'konten') {
+      fetchStepList();
+    } else if (activeTab === 'ujian') {
+      fetchAllTests();
+      fetchQuestionList();
+    }
+  }, [activeTab]);
 
   useEffect(() => {
     if (!questionMateriId) {
@@ -97,6 +152,42 @@ export default function AdminMateriPage() {
       setMateriList(data);
     } catch (error) {
       toast.error(`Error fetching materi: ${String(error)}`);
+      console.error(error);
+    }
+  };
+
+  const fetchStepList = async () => {
+    try {
+      const res = await fetch('/api/step');
+      if (!res.ok) throw new Error('Failed to fetch steps');
+      const data = await res.json();
+      setStepList(data);
+    } catch (error) {
+      toast.error(`Error fetching steps: ${String(error)}`);
+      console.error(error);
+    }
+  };
+
+  const fetchAllTests = async () => {
+    try {
+      const res = await fetch('/api/test');
+      if (!res.ok) throw new Error('Failed to fetch tests');
+      const data = await res.json();
+      setTestList(data);
+    } catch (error) {
+      toast.error(`Error fetching tests: ${String(error)}`);
+      console.error(error);
+    }
+  };
+
+  const fetchQuestionList = async () => {
+    try {
+      const res = await fetch('/api/question');
+      if (!res.ok) throw new Error('Failed to fetch questions');
+      const data = await res.json();
+      setQuestionList(data);
+    } catch (error) {
+      toast.error(`Error fetching questions: ${String(error)}`);
       console.error(error);
     }
   };
@@ -230,6 +321,84 @@ export default function AdminMateriPage() {
     setOptions(newOptions);
   };
 
+  // Edit handlers
+  const handleEditMateri = async (data: unknown) => {
+    const materiData = data as Materi;
+    const res = await fetch(`/api/materi?id=${materiData.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(materiData),
+    });
+    if (!res.ok) throw new Error('Failed to update materi');
+    await fetchMateriList();
+  };
+
+  const handleEditStep = async (data: unknown) => {
+    const stepData = data as Step;
+    const res = await fetch(`/api/step?id=${stepData.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(stepData),
+    });
+    if (!res.ok) throw new Error('Failed to update step');
+    await fetchStepList();
+  };
+
+  const handleEditTest = async (data: unknown) => {
+    const testData = data as Test;
+    const res = await fetch(`/api/test?id=${testData.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(testData),
+    });
+    if (!res.ok) throw new Error('Failed to update test');
+    await fetchAllTests();
+  };
+
+  const handleEditQuestion = async (data: unknown) => {
+    const questionData = data as Question;
+    const res = await fetch(`/api/question?id=${questionData.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(questionData),
+    });
+    if (!res.ok) throw new Error('Failed to update question');
+    await fetchQuestionList();
+  };
+
+  // Delete handlers
+  const handleDeleteMateri = async (item: Materi) => {
+    const res = await fetch(`/api/materi?id=${item.id}`, {
+      method: 'DELETE',
+    });
+    if (!res.ok) throw new Error('Failed to delete materi');
+    await fetchMateriList();
+  };
+
+  const handleDeleteStep = async (item: Step) => {
+    const res = await fetch(`/api/step?id=${item.id}`, {
+      method: 'DELETE',
+    });
+    if (!res.ok) throw new Error('Failed to delete step');
+    await fetchStepList();
+  };
+
+  const handleDeleteTest = async (item: Test) => {
+    const res = await fetch(`/api/test?id=${item.id}`, {
+      method: 'DELETE',
+    });
+    if (!res.ok) throw new Error('Failed to delete test');
+    await fetchAllTests();
+  };
+
+  const handleDeleteQuestion = async (item: Question) => {
+    const res = await fetch(`/api/question?id=${item.id}`, {
+      method: 'DELETE',
+    });
+    if (!res.ok) throw new Error('Failed to delete question');
+    await fetchQuestionList();
+  };
+
   const materiOptions = materiList.map((m) => ({
     value: m.id,
     label: `${m.title} (${m.type === 'PENGANTAR' ? 'Pengantar' : 'Sub Materi'})`,
@@ -253,7 +422,7 @@ export default function AdminMateriPage() {
             title="Tambah Materi"
             onSubmit={submitMateri}
             submitText="Tambah Materi"
-            submitColor="bg-blue-600"
+            submitColor="bg-[#38e078]"
             fields={[
               {
                 label: 'Title',
@@ -292,7 +461,7 @@ export default function AdminMateriPage() {
             title="Tambah Step"
             onSubmit={submitStep}
             submitText="Tambah Step"
-            submitColor="bg-green-600"
+            submitColor="bg-[#38e078]"
             fields={[
               {
                 label: 'Materi',
@@ -333,6 +502,86 @@ export default function AdminMateriPage() {
               />
             </div>
           </AdminForm>
+
+          <AdminDataTable
+            title="Daftar Materi"
+            data={materiList}
+            columns={[
+              {
+                key: 'title',
+                label: 'Judul',
+                sortable: true
+              },
+              {
+                key: 'category',
+                label: 'Kategori',
+                sortable: true
+              },
+              {
+                key: 'type',
+                label: 'Tipe',
+                render: (item) => (
+                  <Badge variant={item.type === 'PENGANTAR' ? 'default' : 'secondary'}>
+                    {item.type === 'PENGANTAR' ? 'Pengantar' : 'Sub Materi'}
+                  </Badge>
+                ),
+                sortable: true
+              },
+              {
+                key: 'slug',
+                label: 'Slug'
+              }
+            ]}
+            onEdit={(item) => setEditingMateri(item)}
+            onDelete={handleDeleteMateri}
+            searchPlaceholder="Cari materi..."
+            searchFields={['title', 'category', 'slug']}
+          />
+
+          <AdminDataTable
+            title="Daftar Steps"
+            data={stepList}
+            columns={[
+              {
+                key: 'title',
+                label: 'Judul Step',
+                sortable: true
+              },
+              {
+                key: 'order',
+                label: 'Urutan',
+                sortable: true
+              },
+              {
+                key: 'materi',
+                label: 'Materi',
+                render: (item) => (
+                  <div>
+                    <div className="font-medium">{item.materi?.title || 'Loading...'}</div>
+                    <div className="text-sm text-gray-500">
+                      {item.materi?.type === 'PENGANTAR' ? 'Pengantar' : 'Sub Materi'}
+                    </div>
+                  </div>
+                )
+              },
+              {
+                key: 'content',
+                label: 'Konten',
+                render: (item) => (
+                  <div className="max-w-xs">
+                    <p className="truncate text-sm text-gray-600">
+                      {item.content?.substring(0, 100) || 'Tidak ada konten'}...
+                    </p>
+                  </div>
+                )
+              }
+            ]}
+            onEdit={(item) => setEditingStep(item)}
+            onDelete={handleDeleteStep}
+            onAdd={() => fetchStepList()}
+            searchPlaceholder="Cari steps..."
+            searchFields={['title']}
+          />
         </TabsContent>
 
         <TabsContent value="ujian" className="space-y-6">
@@ -384,7 +633,7 @@ export default function AdminMateriPage() {
 
               <button
                 type="submit"
-                className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
+                className="bg-[#38e078] text-white px-4 py-2 rounded hover:bg-purple-700"
                 disabled={availableTestTypes.length === 0}
               >
                 Tambah Test
@@ -487,14 +736,149 @@ export default function AdminMateriPage() {
 
               <button
                 type="submit"
-                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
+                className="bg-[#38e078] hover:bg-red-700 text-white px-4 py-2 rounded"
               >
                 Tambah Question
               </button>
             </form>
           </section>
+
+          <AdminDataTable
+            title="Daftar Tests"
+            data={testList}
+            columns={[
+              {
+                key: 'type',
+                label: 'Tipe Test',
+                render: (item) => (
+                  <Badge variant={item.type === 'PRE' ? 'default' : 'secondary'}>
+                    {item.type} Test
+                  </Badge>
+                ),
+                sortable: true
+              },
+              {
+                key: 'materi',
+                label: 'Materi',
+                render: (item) => (
+                  <div>
+                    <div className="font-medium">{item.materi?.title || 'Loading...'}</div>
+                    <div className="text-sm text-gray-500">
+                      {item.materi?.type === 'PENGANTAR' ? 'Pengantar' : 'Sub Materi'}
+                    </div>
+                  </div>
+                )
+              },
+              {
+                key: 'questions',
+                label: 'Jumlah Soal',
+                render: (item) => (
+                  <Badge variant="outline">
+                    {item.questions?.length || 0} soal
+                  </Badge>
+                )
+              }
+            ]}
+            onEdit={(item) => setEditingTest(item)}
+            onDelete={handleDeleteTest}
+            onAdd={() => fetchAllTests()}
+            searchPlaceholder="Cari tests..."
+          />
+
+          {/* Tabel Data Questions */}
+          <AdminDataTable
+            title="Daftar Questions"
+            data={questionList}
+            columns={[
+              {
+                key: 'question',
+                label: 'Pertanyaan',
+                render: (item) => (
+                  <div className="max-w-md">
+                    <p className="truncate">{item.question}</p>
+                  </div>
+                ),
+                sortable: true
+              },
+              {
+                key: 'test',
+                label: 'Test',
+                render: (item) => (
+                  <div>
+                    <div className="font-medium">
+                      {item.test?.materi?.title || 'Loading...'}
+                    </div>
+                    <Badge variant={item.test?.type === 'PRE' ? 'default' : 'secondary'} className="text-xs">
+                      {item.test?.type} Test
+                    </Badge>
+                  </div>
+                )
+              },
+              {
+                key: 'answer',
+                label: 'Jawaban Benar',
+                render: (item) => (
+                  <div className="text-center">
+                    <Badge variant="outline">Opsi {item.answer}</Badge>
+                  </div>
+                )
+              },
+              {
+                key: 'options',
+                label: 'Jumlah Opsi',
+                render: (item) => (
+                  <Badge variant="outline">
+                    {item.options?.length || 0} opsi
+                  </Badge>
+                )
+              }
+            ]}
+            onEdit={(item) => setEditingQuestion(item)}
+            onDelete={handleDeleteQuestion}
+            onAdd={() => fetchQuestionList()}
+            searchPlaceholder="Cari questions..."
+            searchFields={['question']}
+          />
         </TabsContent>
       </Tabs>
+
+      {/* Edit Modals */}
+      <AdminEditModal
+        isOpen={!!editingMateri}
+        onClose={() => setEditingMateri(null)}
+        type="materi"
+        item={editingMateri}
+        materiList={materiList}
+        onSave={handleEditMateri}
+      />
+
+      <AdminEditModal
+        isOpen={!!editingStep}
+        onClose={() => setEditingStep(null)}
+        type="step"
+        item={editingStep}
+        materiList={materiList}
+        onSave={handleEditStep}
+      />
+
+      <AdminEditModal
+        isOpen={!!editingTest}
+        onClose={() => setEditingTest(null)}
+        type="test"
+        item={editingTest}
+        materiList={materiList}
+        onSave={handleEditTest}
+      />
+
+      <AdminEditModal
+        isOpen={!!editingQuestion}
+        onClose={() => setEditingQuestion(null)}
+        type="question"
+        item={editingQuestion}
+        materiList={materiList}
+        testList={testList}
+        onSave={handleEditQuestion}
+      />
     </AdminPageTemplate>
   );
 }

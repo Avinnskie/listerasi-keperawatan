@@ -97,24 +97,26 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({ open, onOpenChange }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[600px] p-0 max-h-[80vh]">
-        <DialogHeader className="px-6 py-4 border-b">
+      <DialogContent className="w-full max-w-[95vw] md:max-w-[700px] p-0 max-h-[90vh] overflow-hidden flex flex-col">
+        <DialogHeader className="px-4 md:px-6 py-4 border-b flex-shrink-0">
           <DialogTitle className="flex items-center gap-2">
             <SearchIcon className="h-5 w-5" />
             Cari Materi Pembelajaran
           </DialogTitle>
         </DialogHeader>
 
-        <div className="p-6">
-          <Input
-            placeholder="Ketik untuk mencari materi..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            className="mb-4"
-            autoFocus
-          />
+        <div className="flex flex-col h-full">
+          <div className="px-4 md:px-6 py-3 md:py-4 border-b flex-shrink-0">
+            <Input
+              placeholder="Ketik untuk mencari materi..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="w-full"
+              autoFocus
+            />
+          </div>
 
-          <div className="max-h-[400px] overflow-y-auto">
+          <div className="flex-1 overflow-y-auto px-2 md:px-4 py-2 md:py-3 max-h-[50vh] md:max-h-[400px]">
             {isLoading ? (
               <div className="flex items-center justify-center py-8">
                 <div className="animate-spin rounded-full h-8 w-8 border-2 border-green-600 border-t-transparent"></div>
@@ -132,27 +134,27 @@ export const SearchDialog: React.FC<SearchDialogProps> = ({ open, onOpenChange }
                     <button
                       key={material.id}
                       onClick={() => handleSelect(material.slug)}
-                      className="w-full text-left p-3 rounded-lg hover:bg-gray-50 border border-transparent hover:border-gray-200 transition-colors"
+                      className="w-full text-left p-2 md:p-3 rounded-lg hover:bg-gray-50 border border-transparent hover:border-gray-200 transition-colors"
                     >
-                      <div className="flex items-start space-x-3">
+                      <div className="flex items-start space-x-2 md:space-x-3">
                         <div className="flex-shrink-0 mt-1">
                           <TypeIcon className="h-4 w-4 text-green-600" />
                         </div>
 
                         <div className="flex-1 min-w-0">
-                          <div className="flex items-center space-x-2 mb-1">
-                            <h4 className="text-sm font-semibold text-gray-900 truncate">
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mb-1">
+                            <h4 className="text-sm font-semibold text-gray-900 truncate flex-1">
                               {material.title}
                             </h4>
-                            <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">
+                            <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full self-start sm:self-center flex-shrink-0">
                               {getTypeLabel(material.type)}
                             </span>
                           </div>
 
-                          <div className="flex items-center space-x-4 text-xs text-gray-500">
+                          <div className="flex flex-wrap items-center gap-2 md:gap-4 text-xs text-gray-500">
                             <span className="flex items-center">
                               <FolderIcon className="h-3 w-3 mr-1" />
-                              {material.category}
+                              <span className="truncate max-w-[100px] sm:max-w-[150px]">{material.category}</span>
                             </span>
                             <span className="flex items-center">
                               <BookOpenIcon className="h-3 w-3 mr-1" />
