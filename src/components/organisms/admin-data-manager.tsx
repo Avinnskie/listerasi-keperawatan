@@ -75,7 +75,6 @@ export const AdminDataManager: React.FC<AdminDataManagerProps> = ({
   const [editingItem, setEditingItem] = useState<Materi | Step | Test | Question | null>(null);
   const [showEditModal, setShowEditModal] = useState(false);
 
-  // Edit form states
   const [editTitle, setEditTitle] = useState('');
   const [editSlug, setEditSlug] = useState('');
   const [editCategory, setEditCategory] = useState('');
@@ -110,7 +109,6 @@ export const AdminDataManager: React.FC<AdminDataManagerProps> = ({
           endpoint = '/api/test';
           break;
         case 'question':
-          // For questions, we need to fetch all questions
           const responses = await Promise.all(
             testList.map(async (test) => {
               const res = await fetch(`/api/test/edit/${test.id}`);
@@ -140,7 +138,6 @@ export const AdminDataManager: React.FC<AdminDataManagerProps> = ({
   const handleEdit = (item: Materi | Step | Test | Question) => {
     setEditingItem(item);
 
-    // Pre-fill form based on type
     switch (type) {
       case 'materi': {
         const materiItem = item as Materi;
@@ -641,7 +638,6 @@ export const AdminDataManager: React.FC<AdminDataManagerProps> = ({
         </div>
       )}
 
-      {/* Edit Modal */}
       {showEditModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">

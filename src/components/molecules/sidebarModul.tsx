@@ -56,11 +56,9 @@ const SidebarContent = ({ materiList }: { materiList: SidebarModulProps['materiL
 
   Object.keys(grouped).forEach((category) => {
     grouped[category].sort((a, b) => {
-      // First priority: 'PENGANTAR' type materials always come first
       if (a.type === 'PENGANTAR' && b.type !== 'PENGANTAR') return -1;
       if (a.type !== 'PENGANTAR' && b.type === 'PENGANTAR') return 1;
 
-      // Second priority: For 'kesehatan' category, use predefined order for non-pengantar items
       if (
         category.toLowerCase() === 'kesehatan' &&
         a.type !== 'PENGANTAR' &&
@@ -73,7 +71,6 @@ const SidebarContent = ({ materiList }: { materiList: SidebarModulProps['materiL
         }
       }
 
-      // Default: sort by title alphabetically for materials of the same type
       return a.title.localeCompare(b.title);
     });
   });

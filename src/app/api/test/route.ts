@@ -109,12 +109,10 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: 'Test not found' }, { status: 404 });
     }
 
-    // Delete related questions first
     await prisma.question.deleteMany({
       where: { testId: id },
     });
 
-    // Then delete the test
     await prisma.test.delete({
       where: { id },
     });

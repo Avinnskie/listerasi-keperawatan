@@ -71,7 +71,6 @@ export default function AdminMateriPage() {
   const [questionList, setQuestionList] = useState<Question[]>([]);
   const [activeTab, setActiveTab] = useState('konten');
 
-  // Form states
   const [title, setTitle] = useState('');
   const [slug, setSlug] = useState('');
   const [category, setCategory] = useState('');
@@ -92,13 +91,11 @@ export default function AdminMateriPage() {
   const [options, setOptions] = useState(['', '', '', '']);
   const [answerIndex, setAnswerIndex] = useState(0);
 
-  // Edit states
   const [editingMateri, setEditingMateri] = useState<Materi | null>(null);
   const [editingStep, setEditingStep] = useState<Step | null>(null);
   const [editingTest, setEditingTest] = useState<Test | null>(null);
   const [editingQuestion, setEditingQuestion] = useState<Question | null>(null);
 
-  // Loading states
   const [isLoadingSteps, setIsLoadingSteps] = useState(false);
   const [isLoadingTests, setIsLoadingTests] = useState(false);
   const [isLoadingQuestions, setIsLoadingQuestions] = useState(false);
@@ -790,7 +787,6 @@ export default function AdminMateriPage() {
             searchPlaceholder="Cari tests..."
           />
 
-          {/* Tabel Data Questions */}
           <AdminDataTable
             title="Daftar Questions"
             data={questionList}
@@ -844,7 +840,6 @@ export default function AdminMateriPage() {
         </TabsContent>
       </Tabs>
 
-      {/* Edit Modals */}
       <AdminEditModal
         isOpen={!!editingMateri}
         onClose={() => setEditingMateri(null)}

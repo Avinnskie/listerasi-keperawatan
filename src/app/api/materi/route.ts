@@ -98,7 +98,6 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: 'ID is required' }, { status: 400 });
     }
 
-    // Check if materi exists and has related data
     const materi = await prisma.materi.findUnique({
       where: { id },
       include: {
@@ -115,7 +114,6 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: 'Materi not found' }, { status: 404 });
     }
 
-    // Delete in order: questions -> tests -> steps -> materi
     for (const test of materi.tests) {
       if (test.questions.length > 0) {
         await prisma.question.deleteMany({

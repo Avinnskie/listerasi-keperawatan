@@ -86,7 +86,6 @@ export function AdminDataTable<T extends BaseEntity>({
     const aValue = a[sortConfig.key];
     const bValue = b[sortConfig.key];
 
-    // Convert to string for safe comparison
     const aString = String(aValue ?? '').toLowerCase();
     const bString = String(bValue ?? '').toLowerCase();
 
@@ -252,7 +251,6 @@ export function AdminDataTable<T extends BaseEntity>({
         </div>
       )}
 
-      {/* Delete Confirmation Dialog */}
       <Dialog open={!!deleteItem} onOpenChange={() => setDeleteItem(null)}>
         <DialogContent>
           <DialogHeader>
