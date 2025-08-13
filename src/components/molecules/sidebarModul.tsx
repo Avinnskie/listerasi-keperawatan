@@ -1,15 +1,25 @@
+'use client';
+
+import Link from 'next/link';
+
 type SidebarModulProps = {
   sidebarOpen: boolean;
   setSidebarOpen: (open: boolean) => void;
   materiList?: { id: string; title: string; slug: string; category: string; type?: string }[];
   loading?: boolean;
+  currentSlug?: string;
 };
 
-export const SidebarModul = ({ sidebarOpen, setSidebarOpen, materiList }: SidebarModulProps) => {
+export const SidebarModul = ({
+  sidebarOpen,
+  setSidebarOpen,
+  materiList,
+  currentSlug,
+}: SidebarModulProps) => {
   return (
     <>
       <aside className="hidden lg:block w-64 border-r bg-[#fafcf7] px-4 py-6 h-full overflow-y-auto">
-        <SidebarContent materiList={materiList} />
+        <SidebarContent materiList={materiList} currentSlug={currentSlug} />
       </aside>
 
       <aside
@@ -24,7 +34,7 @@ export const SidebarModul = ({ sidebarOpen, setSidebarOpen, materiList }: Sideba
             ✕ Tutup
           </button>
         </div>
-        <SidebarContent materiList={materiList} />
+        <SidebarContent materiList={materiList} currentSlug={currentSlug} />
       </aside>
 
       {sidebarOpen && (
@@ -37,20 +47,34 @@ export const SidebarModul = ({ sidebarOpen, setSidebarOpen, materiList }: Sideba
   );
 };
 
-const SidebarContent = ({ materiList }: { materiList: SidebarModulProps['materiList'] }) => {
-  if (!materiList || !Array.isArray(materiList) || materiList.length === 0) {
+const SidebarContent = ({
+  materiList,
+  currentSlug,
+}: {
+  materiList: SidebarModulProps['materiList'];
+  currentSlug?: string;
+}) => {
+  const hasValidData = materiList && Array.isArray(materiList) && materiList.length > 0;
+
+  const grouped = hasValidData
+    ? materiList.reduce((acc: Record<string, typeof materiList>, materi) => {
+        if (!acc[materi.category]) acc[materi.category] = [];
+        acc[materi.category].push(materi);
+        return acc;
+      }, {})
+    : {};
+
+  const currentMaterial =
+    hasValidData && currentSlug ? materiList.find((m) => m.slug === currentSlug) : null;
+  const currentCategory = currentMaterial?.category;
+
+  if (!hasValidData) {
     return (
       <nav className="space-y-4">
         <div className="text-sm text-gray-500 text-center py-4">Tidak ada materi tersedia</div>
       </nav>
     );
   }
-
-  const grouped = materiList.reduce((acc: Record<string, typeof materiList>, materi) => {
-    if (!acc[materi.category]) acc[materi.category] = [];
-    acc[materi.category].push(materi);
-    return acc;
-  }, {});
 
   const kesehatanOrder = ['pendahuluan-covid-19', 'covid-19', 'sars-cov-2', 'imunisasi-covid-19'];
 
@@ -76,22 +100,18 @@ const SidebarContent = ({ materiList }: { materiList: SidebarModulProps['materiL
   });
 
   return (
-    <nav className="space-y-4">
+    <nav className="mt-5 md:mt-0 space-y-4">
+      <h5 className="text-[16px] text-gray-400">Materi tersedia</h5>
       {Object.keys(grouped).map((category) => (
         <div key={category}>
-          <h3 className="text-sm font-semibold text-gray-700 uppercase mb-2">{category}</h3>
-          <ul className="space-y-1 text-sm w-full">
-            {grouped[category].map((item) => (
-              <li key={item.slug}>
-                <a
-                  href={`/modul/${item.slug}`}
-                  className="block px-2 py-1 rounded hover:bg-[#38e078]/20 hover:text-gray-600 transition text-gray-400"
-                >
-                  {item.title}
-                </a>
-              </li>
-            ))}
-          </ul>
+          <div className="flex items-center justify-between mb-2">
+            <Link
+              href={`/modul/${encodeURIComponent(category.toLowerCase().replace(/\s+/g, '-'))}`}
+              className="flex-1 text-sm font-semibold text-gray-700 uppercase hover:text-primary transition-colors"
+            >
+              {category}
+            </Link>
+          </div>
         </div>
       ))}
     </nav>

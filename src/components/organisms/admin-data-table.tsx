@@ -181,41 +181,43 @@ export function AdminDataTable<T extends BaseEntity>({
                 </TableCell>
               </TableRow>
             ) : (
-              paginatedData.map((item, index) => (
-                <TableRow key={item.id} className="hover:bg-gray-50">
-                  {columns.map((column) => (
-                    <TableCell key={column.key}>
-                      {column.render ? column.render(item) : String(item[column.key] ?? '')}
-                    </TableCell>
-                  ))}
-                  {(onEdit || onDelete) && (
-                    <TableCell className="text-right">
-                      <div className="flex justify-end gap-2">
-                        {onEdit && (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => onEdit(item)}
-                            className="h-8 w-8 p-0"
-                          >
-                            <Edit2 className="h-4 w-4" />
-                          </Button>
-                        )}
-                        {onDelete && (
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => setDeleteItem(item)}
-                            className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        )}
-                      </div>
-                    </TableCell>
-                  )}
-                </TableRow>
-              ))
+              <>
+                {paginatedData.map((item) => (
+                  <TableRow key={item.id} className="hover:bg-gray-50">
+                    {columns.map((column) => (
+                      <TableCell key={`${item.id}-${column.key}`}>
+                        {column.render ? column.render(item) : String(item[column.key] ?? '')}
+                      </TableCell>
+                    ))}
+                    {(onEdit || onDelete) && (
+                      <TableCell key={`${item.id}-actions`} className="text-right">
+                        <div className="flex justify-end gap-2">
+                          {onEdit && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => onEdit(item)}
+                              className="h-8 w-8 p-0"
+                            >
+                              <Edit2 className="h-4 w-4" />
+                            </Button>
+                          )}
+                          {onDelete && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => setDeleteItem(item)}
+                              className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          )}
+                        </div>
+                      </TableCell>
+                    )}
+                  </TableRow>
+                ))}
+              </>
             )}
           </TableBody>
         </Table>
