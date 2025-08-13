@@ -70,7 +70,7 @@ const CategorySidebarContent = ({
       return -1;
     }
     if (a.type !== 'PENGANTAR' && b.type === 'PENGANTAR') {
-      return 1
+      return 1;
     }
     return 0;
   });
@@ -86,12 +86,9 @@ const CategorySidebarContent = ({
       </div>
 
       <div className="space-y-1">
-        <div className="py-2">
-          <div className="border-t border-gray-200"></div>
-          <p className="text-xs text-gray-500 mt-2 mb-1 px-3 font-medium uppercase tracking-wide">
-            Materi Pembelajaran
-          </p>
-        </div>
+        <p className="text-xs text-gray-500 mt-2 mb-1 px-3 font-medium uppercase tracking-wide">
+          Materi Pembelajaran
+        </p>
 
         {sortedMaterials.map((material, index) => {
           const isActive = pathname === `/modul/${material.slug}`;
