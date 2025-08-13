@@ -65,6 +65,17 @@ const CategorySidebarContent = ({
   const pathname = usePathname();
   const params = useParams();
 
+  // Sort materials so PENGANTAR type always comes first
+  const sortedMaterials = [...materials].sort((a, b) => {
+    if (a.type === 'PENGANTAR' && b.type !== 'PENGANTAR') {
+      return -1; // a comes first
+    }
+    if (a.type !== 'PENGANTAR' && b.type === 'PENGANTAR') {
+      return 1; // b comes first
+    }
+    return 0; // maintain original order for same types
+  });
+
   return (
     <nav className="space-y-6">
       {/* Category Header */}
@@ -84,7 +95,7 @@ const CategorySidebarContent = ({
           </p>
         </div>
 
-        {materials.map((material, index) => {
+        {sortedMaterials.map((material, index) => {
           const isActive = pathname === `/modul/${material.slug}`;
 
           return (

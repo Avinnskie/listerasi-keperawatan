@@ -29,6 +29,7 @@ export default async function MateriPage({ params }: { params: Promise<{ slug: s
         id: materi.id,
         title: materi.title,
         slug: materi.slug,
+        category: materi.category,
         type: materi.type,
         steps: materi.steps,
         postTest,

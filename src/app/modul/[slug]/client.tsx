@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { SidebarModul } from '@/components/molecules/sidebarModul';
+import { CategorySidebar } from '@/components/molecules/categorySidebar';
 import { PanelRightOpen } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -20,6 +20,7 @@ type MateriData = {
   id: string;
   title: string;
   slug: string;
+  category: string;
   type: 'PENGANTAR' | 'SUB_MATERI';
   steps: Step[];
   postTest?: { id: string } | null;
@@ -31,6 +32,13 @@ type MaterialListItem = {
   slug: string;
   category: string;
   type?: string;
+};
+
+type CategoryMaterials = {
+  id: string;
+  title: string;
+  slug: string;
+  type: string;
 };
 
 export const MateriClientPage = ({
@@ -46,6 +54,27 @@ export const MateriClientPage = ({
 
   const totalSteps = materi.steps.length;
   const progressValue = Math.floor(((step + 1) / totalSteps) * 100);
+
+  // Filter and sort materials by current category
+  const categoryMaterials: CategoryMaterials[] = materiList
+    .filter((item) => item.category === materi.category)
+    .map((item) => ({
+      id: item.id,
+      title: item.title,
+      slug: item.slug,
+      type: item.type || 'SUB_MATERI',
+    }))
+    .sort((a, b) => {
+      // Always put PENGANTAR type first
+      if (a.type === 'PENGANTAR' && b.type !== 'PENGANTAR') {
+        return -1;
+      }
+      if (a.type !== 'PENGANTAR' && b.type === 'PENGANTAR') {
+        return 1;
+      }
+      // Maintain original order for same types
+      return 0;
+    });
 
   const handlePreTest = () => {
     router.push(`/modul/${materi.slug}/test?type=PRE`);
@@ -65,10 +94,11 @@ export const MateriClientPage = ({
       </div>
 
       <div className="flex lg:flex-row">
-        <SidebarModul
+        <CategorySidebar
+          categoryName={materi.category}
+          materials={categoryMaterials}
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
-          materiList={materiList}
         />
 
         <div className="flex-1 px-6 py-10">
