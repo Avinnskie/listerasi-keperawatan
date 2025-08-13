@@ -73,7 +73,7 @@ export async function getGroupedMaterials(): Promise<CategoryGroup[]> {
         return a.title.localeCompare(b.title);
       });
     });
-    
+
     const overviewMap = categoryOverviews.reduce(
       (acc, item) => {
         acc[item.category] = item.overviewMarkdown || '';
