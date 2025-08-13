@@ -100,7 +100,7 @@ const SidebarContent = ({
   });
 
   return (
-    <nav className="mt-5 md:mt-0 space-y-4">
+    <nav className="mt-7 md:mt-0 space-y-4">
       <h5 className="text-[16px] text-gray-400">Materi tersedia</h5>
       {Object.keys(grouped).map((category) => (
         <div key={category}>
