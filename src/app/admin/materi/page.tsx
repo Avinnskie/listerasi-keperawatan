@@ -4,12 +4,20 @@ import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { toast } from 'sonner';
 import { AdminPageTemplate } from '@/components/templates';
-import { AdminForm } from '@/components/organisms';
 import { AdminDataTable } from '@/components/organisms/admin-data-table';
 import { AdminEditModal } from '@/components/organisms/admin-edit-modal';
 import { Label } from '@/components/atoms';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Card } from '@/components/molecules/card';
 
 const MDEditor = dynamic(() => import('@uiw/react-md-editor'), { ssr: false });
 
@@ -143,7 +151,7 @@ export default function AdminMateriPage() {
 
   const fetchMateriList = async () => {
     try {
-      const res = await fetch('/api/materi');
+      const res = await fetch('/api/materi?flat=1');
       if (!res.ok) throw new Error('Failed to fetch materi list');
       const data = await res.json();
       setMateriList(data);
@@ -254,6 +262,7 @@ export default function AdminMateriPage() {
       });
       if (!res.ok) throw new Error('Gagal menambah step');
       toast.success('Step berhasil ditambah! 📝');
+      await fetchStepList();
       setStepMateriId('');
       setStepTitle('');
       setStepContent('');
@@ -403,16 +412,6 @@ export default function AdminMateriPage() {
     await fetchQuestionList();
   };
 
-  const materiOptions = materiList.map((m) => ({
-    value: m.id,
-    label: `${m.title} (${m.type === 'PENGANTAR' ? 'Pengantar' : 'Sub Materi'})`,
-  }));
-
-  const typeOptions = [
-    { value: 'PENGANTAR', label: 'Pengantar' },
-    { value: 'SUB_MATERI', label: 'Sub Materi' },
-  ];
-
   return (
     <AdminPageTemplate title="Admin Panel - Kelola Materi">
       <Tabs defaultValue="konten" value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -422,90 +421,134 @@ export default function AdminMateriPage() {
         </TabsList>
 
         <TabsContent value="konten" className="space-y-6">
-          <AdminForm
-            title="Tambah Materi"
-            onSubmit={submitMateri}
-            submitText="Tambah Materi"
-            submitColor="bg-[#38e078]"
-            fields={[
-              {
-                label: 'Title',
-                placeholder: 'Masukkan judul materi',
-                value: title,
-                onChange: (e) => setTitle(e.target.value),
-                required: true,
-              },
-              {
-                label: 'Slug',
-                placeholder: 'Masukkan slug materi',
-                value: slug,
-                onChange: (e) => setSlug(e.target.value),
-                required: true,
-              },
-              {
-                label: 'Category',
-                placeholder: 'Masukkan kategori materi',
-                value: category,
-                onChange: (e) => setCategory(e.target.value),
-                required: true,
-              },
-              {
-                label: 'Type',
-                type: 'select',
-                placeholder: 'Pilih tipe materi',
-                value: type,
-                onChange: (e) => setType(e.target.value as 'PENGANTAR' | 'SUB_MATERI'),
-                options: typeOptions,
-                required: true,
-              },
-            ]}
-          />
+          <Card title="Tambah Materi" className="w-full">
+            <form onSubmit={submitMateri} className="space-y-4">
+              <div className="space-y-2">
+                <Label required>Title</Label>
+                <Input
+                  placeholder="Masukkan judul materi"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  required
+                />
+              </div>
 
-          <AdminForm
-            title="Tambah Step"
-            onSubmit={submitStep}
-            submitText="Tambah Step"
-            submitColor="bg-[#38e078]"
-            fields={[
-              {
-                label: 'Materi',
-                type: 'select',
-                placeholder: 'Pilih Materi',
-                value: stepMateriId,
-                onChange: (e) => setStepMateriId(e.target.value),
-                options: materiOptions,
-                required: true,
-              },
-              {
-                label: 'Judul Step',
-                placeholder: 'Masukkan judul step',
-                value: stepTitle,
-                onChange: (e) => setStepTitle(e.target.value),
-                required: true,
-              },
-              {
-                label: 'Order',
-                inputType: 'number',
-                placeholder: 'Nomor urutan step',
-                value: stepOrder,
-                onChange: (e) => setStepOrder(Number(e.target.value)),
-                required: true,
-                min: 1,
-              },
-            ]}
-          >
-            <div className="space-y-2">
-              <Label required>Isi Konten (Markdown Editor)</Label>
-              <MDEditor
-                value={stepContent}
-                onChange={(val) => setStepContent(val || '')}
-                height={300}
-                preview="edit"
-                hideToolbar={false}
-                data-color-mode="light"
-              />
-            </div>
-          </AdminForm>
+              <div className="space-y-2">
+                <Label required>Slug</Label>
+                <Input
+                  placeholder="Masukkan slug materi"
+                  value={slug}
+                  onChange={(e) => setSlug(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label required>Category</Label>
+                <Input
+                  placeholder="Masukkan kategori materi"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label required>Type</Label>
+                <Select
+                  value={type}
+                  onValueChange={(value) => setType(value as 'PENGANTAR' | 'SUB_MATERI')}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Pilih tipe materi" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="PENGANTAR">Pengantar</SelectItem>
+                    <SelectItem value="SUB_MATERI">Sub Materi</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="pt-2">
+                <button
+                  type="submit"
+                  className="bg-[#38e078] text-white px-6 py-2 rounded-md font-semibold hover:opacity-90 transition-opacity"
+                >
+                  Tambah Materi
+                </button>
+              </div>
+            </form>
+          </Card>
+
+          <Card title="Tambah Step" className="w-full">
+            <form onSubmit={submitStep} className="space-y-4">
+              <div className="space-y-2">
+                <Label required>Materi</Label>
+                <Select value={stepMateriId} onValueChange={(value) => setStepMateriId(value)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Pilih Materi" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {materiList.length === 0 ? (
+                      <SelectItem value="no-data" disabled>
+                        Tidak ada materi tersedia
+                      </SelectItem>
+                    ) : (
+                      materiList.map((materi) => (
+                        <SelectItem key={materi.id} value={materi.id}>
+                          {materi.title} ({materi.type === 'PENGANTAR' ? 'Pengantar' : 'Sub Materi'}
+                          )
+                        </SelectItem>
+                      ))
+                    )}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label required>Judul Step</Label>
+                <Input
+                  placeholder="Masukkan judul step"
+                  value={stepTitle}
+                  onChange={(e) => setStepTitle(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label required>Order</Label>
+                <Input
+                  type="number"
+                  min={1}
+                  placeholder="Nomor urutan step"
+                  value={stepOrder}
+                  onChange={(e) => setStepOrder(Number(e.target.value))}
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label required>Isi Konten (Markdown Editor)</Label>
+                <MDEditor
+                  value={stepContent}
+                  onChange={(val) => setStepContent(val || '')}
+                  height={300}
+                  preview="edit"
+                  hideToolbar={false}
+                  data-color-mode="light"
+                />
+              </div>
+
+              <div className="pt-2">
+                <button
+                  type="submit"
+                  className="bg-[#38e078] text-white px-6 py-2 rounded-md font-semibold hover:opacity-90 transition-opacity"
+                >
+                  Tambah Step
+                </button>
+              </div>
+            </form>
+          </Card>
 
           <AdminDataTable
             title="Daftar Materi"
@@ -617,8 +660,11 @@ export default function AdminMateriPage() {
                   className="border p-2 w-full rounded"
                   disabled={availableTestTypes.length === 0}
                 >
-                  {availableTestTypes.includes('PRE') && <option value="PRE">Pre Test</option>}
-                  {availableTestTypes.includes('POST') && <option value="POST">Post Test</option>}
+                  {availableTestTypes.map((type) => (
+                    <option key={type} value={type}>
+                      {type === 'PRE' ? 'Pre Test' : 'Post Test'}
+                    </option>
+                  ))}
                 </select>
               </div>
 

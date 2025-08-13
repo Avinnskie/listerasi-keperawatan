@@ -75,3 +75,11 @@ enum MateriType {
   PENGANTAR
   SUB_MATERI
 }
+
+model CategoryOverview {
+  id               String  @id @default(cuid())
+  category         String  @unique
+  overviewMarkdown String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}

@@ -1,24 +1,31 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import { MateriType } from '@/lib/enum';
+import { getGroupedMaterials } from '@/lib/materiService';
 
 const prisma = new PrismaClient();
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const materiList = await prisma.materi.findMany({
-      select: {
-        id: true,
-        title: true,
-        slug: true,
-        category: true,
-        type: true,
-      },
-      orderBy: {
-        title: 'asc',
-      },
-    });
-    return NextResponse.json(materiList);
+    const { searchParams } = new URL(request.url);
+    const flat = searchParams.get('flat');
+
+    if (flat) {
+      const materiList = await prisma.materi.findMany({
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+          category: true,
+          type: true,
+        },
+        orderBy: [{ category: 'asc' }, { title: 'asc' }],
+      });
+      return NextResponse.json(materiList);
+    }
+
+    const groupedMaterials = await getGroupedMaterials();
+    return NextResponse.json(groupedMaterials);
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
