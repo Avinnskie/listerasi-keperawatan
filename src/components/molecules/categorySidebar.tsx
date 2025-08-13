@@ -65,21 +65,19 @@ const CategorySidebarContent = ({
   const pathname = usePathname();
   const params = useParams();
 
-  // Sort materials so PENGANTAR type always comes first
   const sortedMaterials = [...materials].sort((a, b) => {
     if (a.type === 'PENGANTAR' && b.type !== 'PENGANTAR') {
-      return -1; // a comes first
+      return -1;
     }
     if (a.type !== 'PENGANTAR' && b.type === 'PENGANTAR') {
-      return 1; // b comes first
+      return 1
     }
-    return 0; // maintain original order for same types
+    return 0;
   });
 
   return (
     <nav className="space-y-6">
-      {/* Category Header */}
-      <div className="pb-4 border-b border-gray-200">
+      <div className="mt-7 md:mt-0 pb-4 border-b border-gray-200">
         <div className="flex items-center gap-2 mb-2">
           <BookOpen className="w-5 h-5 text-primary" />
           <h2 className="text-lg font-semibold text-gray-900">{categoryName}</h2>
