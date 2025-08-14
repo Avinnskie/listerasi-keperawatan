@@ -62,17 +62,23 @@ export async function POST(request: NextRequest) {
 
     // Prevent skipping order when creating
     if (desiredOrder > nextOrder) {
-      return NextResponse.json({
-        error: `Urutan tidak valid. Step berikutnya harus ${nextOrder}.`,
-      }, { status: 400 });
+      return NextResponse.json(
+        {
+          error: `Urutan tidak valid. Step berikutnya harus ${nextOrder}.`,
+        },
+        { status: 400 }
+      );
     }
 
     // Prevent duplicate order
     const duplicate = existing.find((s) => s.order === desiredOrder);
     if (duplicate) {
-      return NextResponse.json({
-        error: `Step urutan ${desiredOrder} sudah ada. Silakan gunakan angka lain.`,
-      }, { status: 409 });
+      return NextResponse.json(
+        {
+          error: `Step urutan ${desiredOrder} sudah ada. Silakan gunakan angka lain.`,
+        },
+        { status: 409 }
+      );
     }
 
     const step = await prisma.step.create({
@@ -119,9 +125,12 @@ export async function PUT(request: NextRequest) {
     // Ensure no duplicates within same materi
     const duplicate = existing.find((s) => s.order === desiredOrder && s.id !== id);
     if (duplicate) {
-      return NextResponse.json({
-        error: `Step urutan ${desiredOrder} sudah ada untuk materi ini.`,
-      }, { status: 409 });
+      return NextResponse.json(
+        {
+          error: `Step urutan ${desiredOrder} sudah ada untuk materi ini.`,
+        },
+        { status: 409 }
+      );
     }
 
     const step = await prisma.step.update({

@@ -225,7 +225,8 @@ export default function AdminMateriPage() {
   const submitMateri = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const finalCategory = selectedCategory === '__NEW__' ? newCategory.trim() : selectedCategory || category.trim();
+    const finalCategory =
+      selectedCategory === '__NEW__' ? newCategory.trim() : selectedCategory || category.trim();
     if (!finalCategory) {
       return toast.warning('Kategori harus dipilih atau diisi.');
     }
@@ -260,7 +261,7 @@ export default function AdminMateriPage() {
     }
 
     try {
-      const payload: any = {
+      const payload: { title: string; content: string; materiId: string; order?: number } = {
         title: stepTitle,
         content: stepContent,
         materiId: stepMateriId,
@@ -458,10 +459,7 @@ export default function AdminMateriPage() {
               <div className="space-y-2">
                 <Label required>Category</Label>
                 <div className="grid grid-cols-1 gap-2">
-                  <Select
-                    value={selectedCategory}
-                    onValueChange={(v) => setSelectedCategory(v)}
-                  >
+                  <Select value={selectedCategory} onValueChange={(v) => setSelectedCategory(v)}>
                     <SelectTrigger>
                       <SelectValue placeholder="Pilih kategori yang sudah ada atau tambah baru" />
                     </SelectTrigger>
