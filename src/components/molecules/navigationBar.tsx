@@ -25,7 +25,6 @@ export const NavigationBar = ({ className }: NavbarProps) => {
         <AuthButton variant="desktop" />
       </div>
 
-      {/* Mobile Navigation */}
       <div className="flex md:hidden items-center gap-3">
         <SearchButton variant="mobile" />
         <AuthButton variant="mobile" />

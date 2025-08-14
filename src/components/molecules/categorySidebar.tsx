@@ -99,7 +99,7 @@ const CategorySidebarContent = ({
               href={`/modul/${material.slug}`}
               className={`flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors group
                 ${
-                  isActive ? 'bg-primary text-white shadow-sm' : 'text-gray-700 hover:bg-gray-100'
+                  isActive ? 'bg-[#38e078] text-white shadow-sm' : 'text-gray-700 hover:bg-gray-100'
                 }`}
             >
               <div className="flex items-center gap-3 min-w-0 flex-1">
