@@ -15,10 +15,12 @@ type Question = {
 
 export default function TestClientPage({
   materiTitle,
+  materiSlug,
   type,
   questions,
 }: {
   materiTitle: string;
+  materiSlug: string;
   type: 'PRE' | 'POST';
   questions: Question[];
 }) {
@@ -63,7 +65,12 @@ export default function TestClientPage({
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-start p-6 font-lexend">
-      <ResultModal score={score} show={showResult} onClose={() => setShowResult(false)} />
+      <ResultModal
+        score={score}
+        show={showResult}
+        onClose={() => setShowResult(false)}
+        materiSlug={materiSlug}
+      />
       <h1 className="text-2xl font-bold mb-1">{materiTitle}</h1>
       <p className="text-green-600 mb-4">{type === 'PRE' ? 'Pre Test' : 'Post Test'}</p>
 
@@ -93,7 +100,7 @@ export default function TestClientPage({
         <Button onClick={handlePrevious} variant="outline" disabled={currentIndex === 0}>
           Sebelumnya
         </Button>
-        <Button onClick={handleNext}>
+        <Button className="hover:bg-green-600 transition-colors" onClick={handleNext}>
           {currentIndex === questions.length - 1 ? 'Selesai' : 'Selanjutnya'}
         </Button>
       </div>

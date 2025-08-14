@@ -9,9 +9,10 @@ type ResultModalProps = {
   score: number;
   show: boolean;
   onClose: () => void;
+  materiSlug?: string;
 };
 
-export const ResultModal = ({ score, show, onClose }: ResultModalProps) => {
+export const ResultModal = ({ score, show, onClose, materiSlug }: ResultModalProps) => {
   return (
     <AnimatePresence>
       {show && (
@@ -33,10 +34,15 @@ export const ResultModal = ({ score, show, onClose }: ResultModalProps) => {
             <p className="text-sm text-gray-500 mb-6">Terus semangat belajar, ya!</p>
 
             <div className="flex justify-center gap-4">
-              <Link href={'/modul'}>
-                <Button variant="outline">Kembali ke Modul</Button>
+              <Link href={materiSlug ? `/modul/${materiSlug}` : '/modul'}>
+                <Button className="hover:bg-green-600 transition-colors bg">
+                  Kembali ke Materi
+                </Button>
               </Link>
-              <Button onClick={() => toast.info('Fitur ini akan segera hadir! 🚀')}>
+              <Button
+                variant="outline"
+                onClick={() => toast.info('Fitur ini akan segera hadir! 🚀')}
+              >
                 Lihat Sumber
               </Button>
             </div>

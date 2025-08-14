@@ -38,5 +38,12 @@ export default async function TestPage({
     return <TestEmptyQuestions testType={type} materiTitle={materi.title} materiSlug={slug} />;
   }
 
-  return <TestClientPage materiTitle={materi.title} type={type} questions={test.questions} />;
+  return (
+    <TestClientPage
+      materiTitle={materi.title}
+      materiSlug={slug}
+      type={type}
+      questions={test.questions}
+    />
+  );
 }

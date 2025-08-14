@@ -2,6 +2,14 @@
 
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { CategorySidebar } from '@/components/molecules/categorySidebar';
@@ -51,6 +59,7 @@ export const MateriClientPage = ({
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [step, setStep] = useState(0);
+  const [showPostTestPrompt, setShowPostTestPrompt] = useState(false);
 
   const totalSteps = materi.steps.length;
   const progressValue = Math.floor(((step + 1) / totalSteps) * 100);
@@ -133,14 +142,13 @@ export const MateriClientPage = ({
               >
                 Next
               </Button>
-            ) : materi.postTest ? (
-              <Button className="hover:bg-green-600 transition-colors" onClick={handlePostTest}>
-                Kerjakan Post Test
-              </Button>
             ) : (
               <Button
                 className="hover:bg-green-600 transition-colors"
-                onClick={() => toast.success('Selamat! Anda telah menyelesaikan materi ini! 🎓')}
+                onClick={() => {
+                  if (materi.postTest) setShowPostTestPrompt(true);
+                  else toast.success('Selamat! Anda telah menyelesaikan materi ini! 🎓');
+                }}
               >
                 Selesai
               </Button>
@@ -148,6 +156,25 @@ export const MateriClientPage = ({
           </div>
         </div>
       </div>
+      <Dialog open={showPostTestPrompt} onOpenChange={setShowPostTestPrompt}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Kerjakan Post Test sekarang?</DialogTitle>
+            <DialogDescription>
+              Anda telah menyelesaikan materi ini. Lanjutkan untuk mengerjakan Post Test sekarang
+              atau nanti.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowPostTestPrompt(false)}>
+              Nanti
+            </Button>
+            <Button onClick={handlePostTest} className="hover:bg-green-600 transition-colors">
+              Mulai Post Test
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };

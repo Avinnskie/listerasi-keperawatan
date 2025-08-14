@@ -20,7 +20,7 @@ export default async function MateriPage({ params }: { params: Promise<{ slug: s
   const postTest = materi.tests.length > 0 ? materi.tests[0] : null;
 
   const materiList = await prisma.materi.findMany({
-    orderBy: { title: 'asc' },
+    orderBy: { createdAt: 'asc' },
   });
 
   return (
