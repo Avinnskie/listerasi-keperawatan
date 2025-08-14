@@ -18,8 +18,9 @@ export async function GET(request: NextRequest) {
           slug: true,
           category: true,
           type: true,
+          createdAt: true,
         },
-        orderBy: [{ category: 'asc' }, { title: 'asc' }],
+        orderBy: [{ category: 'asc' }, { createdAt: 'asc' }],
       });
       return NextResponse.json(materiList);
     }

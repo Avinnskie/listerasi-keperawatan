@@ -38,12 +38,45 @@ export async function POST(request: NextRequest) {
   try {
     const { title, content, order, materiId } = await request.json();
 
-    if (!title || !content || !order || !materiId) {
+    if (!title || !content || !materiId) {
       return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
     }
 
+    // Determine next expected order
+    const existing = await prisma.step.findMany({
+      where: { materiId },
+      select: { order: true },
+      orderBy: { order: 'asc' },
+    });
+    const maxOrder = existing.length ? Math.max(...existing.map((s) => s.order)) : 0;
+    const nextOrder = maxOrder + 1;
+
+    let desiredOrder: number = Number(order);
+    if (!order && order !== 0) {
+      desiredOrder = nextOrder;
+    }
+
+    if (desiredOrder < 1) {
+      return NextResponse.json({ error: 'Order minimal 1' }, { status: 400 });
+    }
+
+    // Prevent skipping order when creating
+    if (desiredOrder > nextOrder) {
+      return NextResponse.json({
+        error: `Urutan tidak valid. Step berikutnya harus ${nextOrder}.`,
+      }, { status: 400 });
+    }
+
+    // Prevent duplicate order
+    const duplicate = existing.find((s) => s.order === desiredOrder);
+    if (duplicate) {
+      return NextResponse.json({
+        error: `Step urutan ${desiredOrder} sudah ada. Silakan gunakan angka lain.`,
+      }, { status: 409 });
+    }
+
     const step = await prisma.step.create({
-      data: { title, content, order: Number(order), materiId },
+      data: { title, content, order: desiredOrder, materiId },
     });
 
     return NextResponse.json(step, { status: 201 });
@@ -64,8 +97,31 @@ export async function PUT(request: NextRequest) {
 
     const { title, content, order, materiId } = await request.json();
 
-    if (!title || !content || !order || !materiId) {
+    if (!title || !content || !materiId) {
       return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
+    }
+
+    const current = await prisma.step.findUnique({ where: { id } });
+    if (!current) {
+      return NextResponse.json({ error: 'Step not found' }, { status: 404 });
+    }
+
+    const existing = await prisma.step.findMany({
+      where: { materiId },
+      select: { id: true, order: true },
+    });
+
+    const desiredOrder = Number(order);
+    if (!desiredOrder || desiredOrder < 1) {
+      return NextResponse.json({ error: 'Order minimal 1' }, { status: 400 });
+    }
+
+    // Ensure no duplicates within same materi
+    const duplicate = existing.find((s) => s.order === desiredOrder && s.id !== id);
+    if (duplicate) {
+      return NextResponse.json({
+        error: `Step urutan ${desiredOrder} sudah ada untuk materi ini.`,
+      }, { status: 409 });
     }
 
     const step = await prisma.step.update({
@@ -73,7 +129,7 @@ export async function PUT(request: NextRequest) {
       data: {
         title,
         content,
-        order: Number(order),
+        order: desiredOrder,
         materiId,
       },
     });

@@ -82,12 +82,14 @@ export default function AdminMateriPage() {
   const [title, setTitle] = useState('');
   const [slug, setSlug] = useState('');
   const [category, setCategory] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [newCategory, setNewCategory] = useState('');
   const [type, setType] = useState<'PENGANTAR' | 'SUB_MATERI'>('PENGANTAR');
 
   const [stepMateriId, setStepMateriId] = useState('');
   const [stepTitle, setStepTitle] = useState('');
   const [stepContent, setStepContent] = useState('');
-  const [stepOrder, setStepOrder] = useState(1);
+  const [stepOrder, setStepOrder] = useState<string>('');
 
   const [testMateriId, setTestMateriId] = useState('');
   const [testType, setTestType] = useState<'PRE' | 'POST'>('PRE');
@@ -222,11 +224,17 @@ export default function AdminMateriPage() {
 
   const submitMateri = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const finalCategory = selectedCategory === '__NEW__' ? newCategory.trim() : selectedCategory || category.trim();
+    if (!finalCategory) {
+      return toast.warning('Kategori harus dipilih atau diisi.');
+    }
+
     try {
       const res = await fetch('/api/materi', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, slug, category, type }),
+        body: JSON.stringify({ title, slug, category: finalCategory, type }),
       });
       if (!res.ok) throw new Error('Gagal menambah materi');
       const newMateri = await res.json();
@@ -235,6 +243,8 @@ export default function AdminMateriPage() {
       setTitle('');
       setSlug('');
       setCategory('');
+      setSelectedCategory('');
+      setNewCategory('');
       setType('PENGANTAR');
     } catch (error) {
       toast.error(`Gagal menambah materi: ${String(error)}`);
@@ -250,15 +260,17 @@ export default function AdminMateriPage() {
     }
 
     try {
+      const payload: any = {
+        title: stepTitle,
+        content: stepContent,
+        materiId: stepMateriId,
+      };
+      if (stepOrder !== '') payload.order = Number(stepOrder);
+
       const res = await fetch('/api/step', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          title: stepTitle,
-          content: stepContent,
-          order: stepOrder,
-          materiId: stepMateriId,
-        }),
+        body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error('Gagal menambah step');
       toast.success('Step berhasil ditambah! 📝');
@@ -266,7 +278,7 @@ export default function AdminMateriPage() {
       setStepMateriId('');
       setStepTitle('');
       setStepContent('');
-      setStepOrder(1);
+      setStepOrder('');
     } catch (error) {
       toast.error(`Gagal menambah step: ${String(error)}`);
     }
@@ -445,12 +457,36 @@ export default function AdminMateriPage() {
 
               <div className="space-y-2">
                 <Label required>Category</Label>
-                <Input
-                  placeholder="Masukkan kategori materi"
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                  required
-                />
+                <div className="grid grid-cols-1 gap-2">
+                  <Select
+                    value={selectedCategory}
+                    onValueChange={(v) => setSelectedCategory(v)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Pilih kategori yang sudah ada atau tambah baru" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Array.from(new Set(materiList.map((m) => m.category))).map((cat) => (
+                        <SelectItem key={cat} value={cat}>
+                          {cat}
+                        </SelectItem>
+                      ))}
+                      <SelectItem value="__NEW__">+ Tambah kategori baru…</SelectItem>
+                    </SelectContent>
+                  </Select>
+
+                  {(selectedCategory === '__NEW__' || (!selectedCategory && category)) && (
+                    <Input
+                      placeholder="Tulis kategori baru"
+                      value={newCategory || category}
+                      onChange={(e) => {
+                        setNewCategory(e.target.value);
+                        setCategory(e.target.value);
+                        if (e.target.value) setSelectedCategory('__NEW__');
+                      }}
+                    />
+                  )}
+                </div>
               </div>
 
               <div className="space-y-2">
@@ -516,14 +552,17 @@ export default function AdminMateriPage() {
               </div>
 
               <div className="space-y-2">
-                <Label required>Order</Label>
+                <Label>Order</Label>
                 <Input
-                  type="number"
-                  min={1}
-                  placeholder="Nomor urutan step"
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  placeholder="Nomor urutan step (kosongkan untuk otomatis)"
                   value={stepOrder}
-                  onChange={(e) => setStepOrder(Number(e.target.value))}
-                  required
+                  onChange={(e) => {
+                    const v = e.target.value;
+                    if (v === '' || /^\d+$/.test(v)) setStepOrder(v);
+                  }}
                 />
               </div>
 
