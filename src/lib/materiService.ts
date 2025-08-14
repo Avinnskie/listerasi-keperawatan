@@ -17,6 +17,7 @@ export type MaterialItem = {
   slug: string;
   category: string;
   type: string;
+  createdAt: Date;
 };
 
 export type CategoryGroup = {
@@ -35,6 +36,7 @@ export async function getGroupedMaterials(): Promise<CategoryGroup[]> {
           slug: true,
           category: true,
           type: true,
+          createdAt: true,
         },
       }),
       prisma.categoryOverview.findMany({
@@ -54,7 +56,7 @@ export async function getGroupedMaterials(): Promise<CategoryGroup[]> {
     const kesehatanOrder = ['pendahuluan-covid-19', 'covid-19', 'sars-cov-2', 'imunisasi-covid-19'];
 
     Object.keys(grouped).forEach((category) => {
-      grouped[category].sort((a, b) => {
+      grouped[category].sort((a: MaterialItem, b: MaterialItem) => {
         if (a.type === 'PENGANTAR' && b.type !== 'PENGANTAR') return -1;
         if (a.type !== 'PENGANTAR' && b.type === 'PENGANTAR') return 1;
 
@@ -70,7 +72,8 @@ export async function getGroupedMaterials(): Promise<CategoryGroup[]> {
           }
         }
 
-        return a.title.localeCompare(b.title);
+        // Default: use creation order (older first)
+        return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
       });
     });
 

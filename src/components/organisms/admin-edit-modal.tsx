@@ -183,12 +183,17 @@ export function AdminEditModal({
               <Label htmlFor="order">Urutan *</Label>
               <Input
                 id="order"
-                type="number"
-                min="1"
-                value={String(formData.order || '')}
-                onChange={(e) => handleInputChange('order', parseInt(e.target.value) || 1)}
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                value={String(formData.order ?? '')}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  if (v === '' || /^\d+$/.test(v)) {
+                    handleInputChange('order', v === '' ? '' : Number(v));
+                  }
+                }}
                 placeholder="Nomor urutan step"
-                required
               />
             </div>
 
