@@ -55,7 +55,6 @@ export const MateriClientPage = ({
   const totalSteps = materi.steps.length;
   const progressValue = Math.floor(((step + 1) / totalSteps) * 100);
 
-  // Filter and sort materials by current category
   const categoryMaterials: CategoryMaterials[] = materiList
     .filter((item) => item.category === materi.category)
     .map((item) => ({
@@ -65,14 +64,12 @@ export const MateriClientPage = ({
       type: item.type || 'SUB_MATERI',
     }))
     .sort((a, b) => {
-      // Always put PENGANTAR type first
       if (a.type === 'PENGANTAR' && b.type !== 'PENGANTAR') {
         return -1;
       }
       if (a.type !== 'PENGANTAR' && b.type === 'PENGANTAR') {
         return 1;
       }
-      // Maintain original order for same types
       return 0;
     });
 
@@ -109,7 +106,9 @@ export const MateriClientPage = ({
           <article className="w-full prose max-w-none mt-4">
             {materi.type === 'PENGANTAR' && step === 0 && (
               <div className="mb-4">
-                <Button onClick={handlePreTest}>Kerjakan Pre Test</Button>
+                <Button className="hover:bg-green-600 transition-colors" onClick={handlePreTest}>
+                  Kerjakan Pre Test
+                </Button>
               </div>
             )}
             <h2>{materi.steps[step]?.title}</h2>
@@ -128,11 +127,19 @@ export const MateriClientPage = ({
             )}
 
             {step < totalSteps - 1 ? (
-              <Button onClick={() => setStep((s) => s + 1)}>Next</Button>
+              <Button
+                className="hover:bg-green-600 transition-colors"
+                onClick={() => setStep((s) => s + 1)}
+              >
+                Next
+              </Button>
             ) : materi.postTest ? (
-              <Button onClick={handlePostTest}>Kerjakan Post Test</Button>
+              <Button className="hover:bg-green-600 transition-colors" onClick={handlePostTest}>
+                Kerjakan Post Test
+              </Button>
             ) : (
               <Button
+                className="hover:bg-green-600 transition-colors"
                 onClick={() => toast.success('Selamat! Anda telah menyelesaikan materi ini! 🎓')}
               >
                 Selesai

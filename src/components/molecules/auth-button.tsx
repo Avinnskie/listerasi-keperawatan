@@ -15,7 +15,6 @@ export const AuthButton: React.FC<AuthButtonProps> = ({ variant = 'desktop' }) =
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -29,7 +28,6 @@ export const AuthButton: React.FC<AuthButtonProps> = ({ variant = 'desktop' }) =
     }
   }, [isDropdownOpen]);
 
-  // Generate avatar initials
   const getAvatarInitials = (name: string) => {
     return name
       .split(' ')
@@ -92,7 +90,6 @@ export const AuthButton: React.FC<AuthButtonProps> = ({ variant = 'desktop' }) =
         </div>
       );
     } else {
-      // Mobile version with avatar dropdown
       const initials = getAvatarInitials(userName);
 
       return (
@@ -113,10 +110,8 @@ export const AuthButton: React.FC<AuthButtonProps> = ({ variant = 'desktop' }) =
             )}
           </button>
 
-          {/* Dropdown Menu */}
           {isDropdownOpen && (
             <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
-              {/* User Info */}
               <div className="px-4 py-2 border-b border-gray-100">
                 <p className="text-sm font-semibold text-gray-900">{displayName}</p>
                 <p className="text-xs text-gray-500">{session.user?.email}</p>
@@ -127,7 +122,6 @@ export const AuthButton: React.FC<AuthButtonProps> = ({ variant = 'desktop' }) =
                 )}
               </div>
 
-              {/* Menu Items */}
               <div className="py-1">
                 {session.user?.role === 'ADMIN' && (
                   <Link

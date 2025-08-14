@@ -47,7 +47,6 @@ export default function Modul() {
     fetchMaterials();
   }, []);
 
-  // Group materials by category
   const groupedMaterials = materiList.reduce((acc: Record<string, CategoryGroup>, material) => {
     if (!acc[material.category]) {
       acc[material.category] = {
@@ -63,7 +62,6 @@ export default function Modul() {
 
   const categories = Object.values(groupedMaterials);
 
-  // Category icons mapping
   const getCategoryIcon = (category: string) => {
     switch (category.toLowerCase()) {
       case 'kesehatan':

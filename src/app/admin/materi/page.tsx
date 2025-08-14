@@ -683,7 +683,7 @@ export default function AdminMateriPage() {
 
               <button
                 type="submit"
-                className="bg-[#38e078] text-white px-4 py-2 rounded hover:bg-purple-700"
+                className="bg-[#38e078] text-white px-4 py-2 rounded-md hover:opacity-90"
                 disabled={availableTestTypes.length === 0}
               >
                 Tambah Test
@@ -786,7 +786,7 @@ export default function AdminMateriPage() {
 
               <button
                 type="submit"
-                className="bg-[#38e078] hover:bg-red-700 text-white px-4 py-2 rounded"
+                className="bg-[#38e078] hover:opacity-90 text-white px-4 py-2 rounded-md"
               >
                 Tambah Question
               </button>
