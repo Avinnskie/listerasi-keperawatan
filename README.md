@@ -14,20 +14,24 @@
 ## 🛠️ Teknologi yang Digunakan
 
 ### Framework & Runtime
+
 - **[Next.js 15.4.5](https://nextjs.org/)** - React framework dengan App Router
 - **[React 19.1.0](https://reactjs.org/)** - UI library
 - **[TypeScript 5](https://www.typescriptlang.org/)** - Type-safe JavaScript
 - **[Node.js](https://nodejs.org/)** - JavaScript runtime
 
 ### Database & ORM
+
 - **[Prisma 6.13.0](https://www.prisma.io/)** - Database toolkit dan ORM
 - **[PostgreSQL](https://www.postgresql.org/)** - Database relational
 
 ### Authentication
+
 - **[NextAuth.js 4.24.11](https://next-auth.js.org/)** - Authentication library
 - **[bcryptjs](https://www.npmjs.com/package/bcryptjs)** - Password hashing
 
 ### UI & Styling
+
 - **[Tailwind CSS 4](https://tailwindcss.com/)** - Utility-first CSS framework
 - **[shadcn/ui](https://ui.shadcn.com/)** - Re-usable components
 - **[Radix UI](https://www.radix-ui.com/)** - Primitive UI components
@@ -35,11 +39,13 @@
 - **[Framer Motion](https://www.framer.com/motion/)** - Animation library
 
 ### Content & Editor
+
 - **[React Markdown](https://remarkjs.github.io/react-markdown/)** - Markdown renderer
 - **[MDX Editor](https://mdxeditor.dev/)** - Rich text editor
 - **[Quill](https://quilljs.com/)** - WYSIWYG editor
 
 ### Development Tools
+
 - **[ESLint](https://eslint.org/)** - Linting tool
 - **[Prettier](https://prettier.io/)** - Code formatter
 - **[Husky](https://typicode.github.io/husky/)** - Git hooks
@@ -119,6 +125,7 @@ literasikeperawatan/
 ### Prerequisites
 
 Pastikan Anda telah menginstall:
+
 - **Node.js** (versi 18.17 atau lebih baru)
 - **npm**, **yarn**, **pnpm**, atau **bun**
 - **PostgreSQL** database
@@ -217,10 +224,12 @@ npm run prepare      # Setup Husky git hooks
 Aplikasi menggunakan PostgreSQL dengan Prisma ORM. Berikut adalah model utama:
 
 ### User Management
+
 - **User**: Manajemen pengguna dengan role-based access
 - **Role**: ADMIN | USER
 
 ### Content Management
+
 - **Materi**: Modul pembelajaran dengan kategori dan tipe
 - **Step**: Langkah-langkah dalam setiap materi
 - **Test**: Pre-test dan Post-test untuk setiap materi
@@ -246,17 +255,20 @@ Aplikasi menggunakan **Atomic Design Pattern** dengan struktur:
 - **Session management** dengan JWT
 
 ### User Roles:
+
 - **ADMIN**: Akses penuh ke admin dashboard
 - **USER**: Akses ke konten pembelajaran
 
 ## 📚 API Documentation
 
 ### Authentication Endpoints
+
 - `POST /api/auth/signin` - User login
 - `POST /api/auth/signout` - User logout
 - `GET /api/auth/session` - Get current session
 
 ### Content Management
+
 - `GET /api/materi` - Get all materials
 - `GET /api/materi/[slug]` - Get specific material
 - `POST /api/materi` - Create new material (Admin)
@@ -264,6 +276,7 @@ Aplikasi menggunakan **Atomic Design Pattern** dengan struktur:
 - `DELETE /api/materi/[slug]` - Delete material (Admin)
 
 ### Search & Testing
+
 - `GET /api/search` - Search materials
 - `GET /api/test` - Get test questions
 - `POST /api/test` - Submit test answers
