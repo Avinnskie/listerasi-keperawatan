@@ -347,3 +347,4 @@ Jika Anda mengalami masalah atau memiliki pertanyaan:
 1. Periksa [documentation](README.md)
 2. Cari di [Issues](../../issues)
 3. Buat [Issue baru](../../issues/new) jika diperlukan
+4. Hubungi Developer jika di perlukan
