@@ -4,62 +4,46 @@ import bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 async function main() {
-  const passwordHash = await bcrypt.hash('admin123', 10);
+  const oldEmail = 'admin@example.com'; // email lama untuk dicari
+  const newEmail = 'superadmin@gmail.com'; // email baru
+  const newPassword = 'literasiadmin1.'; // password baru
+  const newPasswordHash = await bcrypt.hash(newPassword, 10);
 
   const admin = await prisma.user.upsert({
-    where: { email: 'admin@example.com' },
-    update: {},
+    where: { email: oldEmail },
+    update: {
+      email: newEmail,
+      password: newPasswordHash,
+    },
     create: {
       name: 'admin',
-      email: 'admin@example.com',
-      password: passwordHash,
+      email: newEmail,
+      password: newPasswordHash,
       role: 'ADMIN',
     },
   });
 
-  console.log('Admin user created:', admin);
+  console.log('✅ Admin user created/updated:', admin);
 
+  // seed category overview (biar tetap jalan)
   const categoryOverviews = [
     {
       category: 'Kesehatan Dasar',
       overviewMarkdown: `# Kesehatan Dasar
 
-Selamat datang di kategori Kesehatan Dasar! Ini adalah fondasi penting untuk memahami prinsip-prinsip kesehatan.
-
-## Yang Akan Anda Pelajari:
-- Konsep dasar kesehatan dan kesehatan masyarakat
-- Pentingnya pola hidup sehat dalam kehidupan sehari-hari
-- Prinsip-prinsip pencegahan penyakit
-
-Materi ini dirancang untuk memberikan pemahaman yang kuat tentang dasar-dasar kesehatan sebelum mempelajari topik yang lebih spesifik.`,
+Selamat datang di kategori Kesehatan Dasar!...`,
     },
     {
       category: 'Penyakit Umum',
       overviewMarkdown: `# Penyakit Umum
 
-Pelajari tentang penyakit-penyakit yang sering ditemui dalam kehidupan sehari-hari.
-
-## Fokus Pembelajaran:
-- Identifikasi gejala penyakit umum
-- Cara pencegahan yang efektif
-- Penanganan awal yang tepat
-- Kapan harus mencari bantuan medis
-
-Dengan memahami penyakit-penyakit umum, Anda dapat memberikan respons yang tepat dan cepat ketika menghadapi situasi kesehatan tertentu.`,
+Pelajari tentang penyakit-penyakit...`,
     },
     {
       category: 'Pertolongan Pertama',
       overviewMarkdown: `# Pertolongan Pertama
 
-Keterampilan pertolongan pertama adalah kemampuan penting yang dapat menyelamatkan nyawa.
-
-## Kompetensi yang Akan Dikuasai:
-- Prinsip dasar P3K (Pertolongan Pertama Pada Kecelakaan)
-- Penanganan luka dan pendarahan
-- Teknik-teknik pertolongan darurat
-- Penggunaan peralatan P3K
-
-**Ingat:** Pertolongan pertama yang tepat dapat membuat perbedaan besar dalam situasi darurat. Mari pelajari bersama!`,
+Keterampilan pertolongan pertama...`,
     },
   ];
 
@@ -71,7 +55,7 @@ Keterampilan pertolongan pertama adalah kemampuan penting yang dapat menyelamatk
     });
   }
 
-  console.log('Category overviews seeded successfully!');
+  console.log('✅ Category overviews seeded successfully!');
 }
 
 main()

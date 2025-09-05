@@ -173,7 +173,7 @@ export default function Login() {
 
           <div className="text-center mt-6">
             <p className="text-sm text-gray-500">
-              © 2024 Literasi Keperawatan. All rights reserved.
+              © 2025 Literasi Keperawatan. All rights reserved.
             </p>
           </div>
         </div>
